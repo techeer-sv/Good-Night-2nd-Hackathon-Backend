@@ -1,4 +1,12 @@
-import { Controller, Post, Body, Delete, Param, Get } from "@nestjs/common";
+import {
+  Controller,
+  Post,
+  Body,
+  Delete,
+  Param,
+  Get,
+  Query,
+} from "@nestjs/common";
 import { MoviesService } from "./movies.service";
 import { Movie } from "./entities/movie.entity";
 import { ApiOperation, ApiResponse } from "@nestjs/swagger";
@@ -21,6 +29,25 @@ export class MoviesController {
   async getOneMovie(@Param("id") id: string) {
     const getMovie = await this.moviesService.getOneMovie(+id);
     return getMovie;
+  }
+
+  //[GET] 영화 목록 조회
+  @ApiResponse({
+    status: 500,
+    description: "서버에러!",
+  })
+  @ApiResponse({
+    status: 200,
+    description: "성공!",
+  })
+  @ApiOperation({ summary: "영화 단일 조회" })
+  async getTermMovie(
+    @Query("genre") genre: string,
+    @Query("isShowing") isShowing: boolean
+  ) {
+    const filteredAndSortedMovies =
+      await this.moviesService.getFilteredAndSortedMovies(genre, isShowing);
+    return filteredAndSortedMovies;
   }
 
   //[CREATE] 영화 등록 API

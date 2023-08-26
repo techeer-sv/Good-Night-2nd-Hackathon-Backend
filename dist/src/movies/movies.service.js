@@ -28,6 +28,18 @@ let MoviesService = class MoviesService {
         }
         return movie;
     }
+    async getFilteredAndSortedMovies(genre, isShowing) {
+        let query = this.movieRepository.createQueryBuilder("movie");
+        if (genre) {
+            query = query.andWhere("movie.genre = :genre", { genre });
+        }
+        if (isShowing !== undefined) {
+            query = query.andWhere("movie.isShowing = :isShowing", { isShowing });
+        }
+        query = query.orderBy("movie.releaseDate", "DESC");
+        const movies = await query.getMany();
+        return movies;
+    }
     async createMovie(movieData) {
         const movie = this.movieRepository.create(movieData);
         return this.movieRepository.save(movie);

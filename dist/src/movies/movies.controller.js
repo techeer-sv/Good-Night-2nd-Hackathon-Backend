@@ -24,6 +24,10 @@ let MoviesController = class MoviesController {
         const getMovie = await this.moviesService.getOneMovie(+id);
         return getMovie;
     }
+    async getTermMovie(genre, isShowing) {
+        const filteredAndSortedMovies = await this.moviesService.getFilteredAndSortedMovies(genre, isShowing);
+        return filteredAndSortedMovies;
+    }
     async createMovie(movieData) {
         const createdMovie = await this.moviesService.createMovie(movieData);
         return createdMovie;
@@ -50,6 +54,22 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], MoviesController.prototype, "getOneMovie", null);
+__decorate([
+    (0, swagger_1.ApiResponse)({
+        status: 500,
+        description: "서버에러!",
+    }),
+    (0, swagger_1.ApiResponse)({
+        status: 200,
+        description: "성공!",
+    }),
+    (0, swagger_1.ApiOperation)({ summary: "영화 단일 조회" }),
+    __param(0, (0, common_1.Query)("genre")),
+    __param(1, (0, common_1.Query)("isShowing")),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Boolean]),
+    __metadata("design:returntype", Promise)
+], MoviesController.prototype, "getTermMovie", null);
 __decorate([
     (0, swagger_1.ApiResponse)({
         status: 500,
