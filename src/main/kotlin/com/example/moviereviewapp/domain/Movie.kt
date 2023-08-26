@@ -2,26 +2,36 @@ package com.example.moviereviewapp.domain
 
 import com.example.moviereviewapp.dto.MovieDTO
 import jakarta.persistence.*
+import org.hibernate.annotations.CreationTimestamp
+import java.sql.Timestamp
+import java.time.Instant
 import java.time.LocalDate
-import java.time.LocalDateTime
+
 
 @Entity
 data class Movie(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null,
+
+    @Column(nullable = false, length = 64, unique = true)
     var title: String,
     @Enumerated(EnumType.STRING)
     var genre: Genre,
     var releaseDate: LocalDate,
     var endDate: LocalDate,
     var isShowing: Boolean,
-    val registrationDate: LocalDate = LocalDate.now(),
-    var isDeleted: Boolean = false,
 
-    @Column(name = "updated_date")
-    var updatedDate: LocalDateTime? = null
+    @CreationTimestamp
+    val createAt: Timestamp? = null,
+    var updatedAt: Timestamp? = null,
+    var isDeleted: Boolean = false,
 ) {
+    @PreUpdate
+    private fun onUpdate() {
+        updatedAt = Timestamp.from(Instant.now())
+    }
+
     fun toDTO(): MovieDTO {
         return MovieDTO(
             id = id,
@@ -29,8 +39,7 @@ data class Movie(
             genre = genre,
             releaseDate = releaseDate,
             endDate = endDate,
-            isShowing = isShowing,
-            registrationDate = registrationDate
+            isShowing = isShowing
         )
     }
 }

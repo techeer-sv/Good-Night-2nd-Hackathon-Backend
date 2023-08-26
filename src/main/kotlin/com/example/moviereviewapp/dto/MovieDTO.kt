@@ -10,8 +10,7 @@ data class MovieDTO(
     val genre: Genre,
     val releaseDate: LocalDate,
     val endDate: LocalDate,
-    val isShowing: Boolean,
-    val registrationDate: LocalDate
+    val isShowing: Boolean
 ) {
     fun toEntity(): Movie {
         return Movie(
@@ -20,8 +19,7 @@ data class MovieDTO(
             genre = genre,
             releaseDate = releaseDate,
             endDate = endDate,
-            isShowing = isShowing,
-            registrationDate = registrationDate
+            isShowing = isShowing
         )
     }
 }

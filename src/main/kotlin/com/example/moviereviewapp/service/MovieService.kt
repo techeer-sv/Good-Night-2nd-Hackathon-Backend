@@ -11,8 +11,20 @@ class MovieService(private val movieRepository: MovieRepository) {
         return movieRepository.save(movie)
     }
 
-    fun updateMovie(movie: Movie): Movie {
-        return movieRepository.save(movie)
+    fun updateMovie(movieId: Long, updatedMovie: Movie): Movie {
+        val existingMovie = movieRepository.findById(movieId).orElseThrow {
+            throw NoSuchElementException("Movie with ID $movieId not found")
+        }
+
+        existingMovie.apply {
+            title = updatedMovie.title
+            genre = updatedMovie.genre
+            releaseDate = updatedMovie.releaseDate
+            endDate = updatedMovie.endDate
+            isShowing = updatedMovie.isShowing
+        }
+
+        return movieRepository.save(existingMovie)
     }
 
     fun getAllMovies(): List<Movie> {
@@ -21,5 +33,17 @@ class MovieService(private val movieRepository: MovieRepository) {
 
     fun getMovieById(id: Long): Movie? {
         return movieRepository.findById(id).orElse(null)
+    }
+
+    fun softDeleteMovie(movieId: Long) {
+        val movie = movieRepository.findById(movieId).orElseThrow {
+            throw NoSuchElementException("Movie with ID $movieId not found")
+        }
+        movie.isDeleted = true
+        movieRepository.save(movie)
+    }
+
+    fun hardDeleteMovie(movieId: Long) {
+        movieRepository.deleteById(movieId)
     }
 }
