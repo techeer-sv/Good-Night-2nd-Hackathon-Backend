@@ -13,6 +13,8 @@ func SetUpRouter() *gin.Engine {
 		v1.POST("movie", Controllers.CreateAMovie)
 		v1.DELETE("movie", Controllers.DeleteAMovie)
 		v1.PUT("movie", Controllers.UpdateAMovie)
+		v1.POST("review", Controllers.CreateReview)
+		v1.GET("review", Controllers.GetReviews)
 	}
 	return r
 }

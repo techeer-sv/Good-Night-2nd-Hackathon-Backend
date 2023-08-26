@@ -1,7 +1,6 @@
 package Controllers
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -19,6 +18,18 @@ func GetMovies(c *gin.Context) {
 		if err != nil {
 			c.AbortWithStatus(http.StatusNotFound)
 		} else {
+			var reviews []Models.Reviews
+			err := Models.GetReviewsByID(&reviews, id)
+			if err != nil {
+				c.AbortWithStatus(http.StatusInternalServerError)
+				return
+			}
+			avgStars, err := Models.GetAverageRating(reviews, id)
+			if err != nil {
+				c.AbortWithStatus(http.StatusInternalServerError)
+				return
+			}
+			movie.AvgRating = avgStars
 			c.JSON(http.StatusOK, movie)
 		}
 	case genre != "" && active != "":
@@ -50,7 +61,6 @@ func GetMovies(c *gin.Context) {
 			c.JSON(http.StatusOK, movie)
 		}
 	default:
-		fmt.Println("here")
 		var movie []Models.Movies
 		err := Models.GetAllMovies(&movie)
 		if err != nil {
@@ -65,9 +75,8 @@ func CreateAMovie(c *gin.Context) {
 	var movie Models.Movies
 	c.BindJSON(&movie)
 	title := movie.Title
-	fmt.Println(title)
 	if title == "" {
-		c.AbortWithStatus(http.StatusNotFound)
+		c.AbortWithStatus(http.StatusBadRequest)
 	} else {
 		err := Models.CreateAMovie(&movie)
 		if err != nil {
