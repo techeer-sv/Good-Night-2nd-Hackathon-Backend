@@ -1,3 +1,10 @@
+/*
+Repository
+전역적으로 사용하기 위한 함수들의 원형을 정의하는 파일
+최대한 관련된 .kt 파일에서만 사용
+
+
+ */
 package hhs.movie.repository
 
 import hhs.movie.model.Movie
@@ -14,5 +21,4 @@ interface MovieRepository : JpaRepository<Movie, Long> {
 
     fun findByIsShowingAndIsDeletedFalse(isShowing: Boolean): List<Movie>
 
-    // 필요한 추가 쿼리 메소드를 여기에 작성할 수 있습니다.
 }

@@ -1,6 +1,12 @@
+/*
+Repository
+전역적으로 사용하기 위한 함수들의 원형을 정의하는 파일
+최대한 관련된 .kt 파일에서만 사용
+
+
+ */
 package hhs.movie.repository
 
-import hhs.movie.model.Movie
 import hhs.movie.model.Review
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
@@ -8,9 +14,8 @@ import org.springframework.stereotype.Repository
 @Repository
 interface ReviewRepository : JpaRepository<Review, Long> {
 
-    fun findByMovieAndRatingGreaterThanEqualOrderByCreatedDateDesc(movie: Movie, rating: Double): List<Review>
+    fun findByMovieIdOrderByCreatedDateDesc(movieId: Long): List<Review>
 
-    fun findByMovieOrderByCreatedDateDesc(movie: Movie): List<Review>
+    fun findByMovieIdAndRatingGreaterThanEqualOrderByCreatedDateDesc(movieId: Long, rating: Double): List<Review>
 
-    // 필요한 추가 쿼리 메소드를 여기에 작성할 수 있습니다.
 }
