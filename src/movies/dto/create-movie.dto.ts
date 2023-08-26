@@ -1,4 +1,5 @@
 import { Transform } from 'class-transformer';
+import { IsNull } from 'typeorm';
 
 export class CreateMovieDto {
   title: string;

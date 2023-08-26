@@ -1,42 +1,38 @@
 import { Exclude } from 'class-transformer';
+import { Movie } from 'src/movies/entities/movie.entity';
 import {
   Column,
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
-  OneToMany,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Comment } from '../../comments/entities/comment.entity';
+
 @Entity()
-export class Movie {
-  // 영화 고유 번호
+export class Comment {
+  // 댓글 고유 번호
   @PrimaryGeneratedColumn()
   id: number;
 
-  @OneToMany(() => Comment, (comment) => comment.movie)
-  comments: Comment[];
+  @ManyToOne(() => Movie, (movie) => movie.comments)
+  movie: Movie;
 
-  // 제목
   @Column()
-  title: string;
+  movieId: number;
 
-  // 장르
-  @Column()
-  genre: string;
+  // 댓글 내용
+  @Column({
+    type: 'text',
+  })
+  content: string;
 
-  // 개봉일
-  @Column('datetime')
-  releaseDate: Date;
-
-  // 상영 종료일
-  @Column('datetime')
-  endDate: Date;
-
-  // 상영 중 여부
-  @Column()
-  isShowing: boolean;
+  // 댓글 평점
+  @Column({
+    type: 'float',
+  })
+  rating: number;
 
   // 등록 일자
   @CreateDateColumn({
