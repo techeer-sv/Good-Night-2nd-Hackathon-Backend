@@ -122,8 +122,8 @@ class MovieControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.content").isArray)
                 .andExpect(MockMvcResultMatchers.jsonPath("$.content.length()").value(pageSize))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.totalPages").value(3))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].title").value("Movie 5"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.content[1].title").value("Movie 7"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].movie.title").value("Movie 5"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content[1].movie.title").value("Movie 7"))
         } finally {
             movieRepository.deleteAll(savedMovies)
         }

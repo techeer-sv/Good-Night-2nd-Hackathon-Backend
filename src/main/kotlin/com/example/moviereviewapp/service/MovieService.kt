@@ -2,8 +2,9 @@ package com.example.moviereviewapp.service
 
 import com.example.moviereviewapp.domain.Genre
 import com.example.moviereviewapp.domain.Movie
-import com.example.moviereviewapp.dto.MovieDTO
+import com.example.moviereviewapp.dto.MovieWithAvgRatingDTO
 import com.example.moviereviewapp.repository.MovieRepository
+import com.example.moviereviewapp.repository.ReviewRepository
 import jakarta.persistence.criteria.Predicate
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
@@ -11,7 +12,10 @@ import org.springframework.data.jpa.domain.Specification
 import org.springframework.stereotype.Service
 
 @Service
-class MovieService(private val movieRepository: MovieRepository) {
+class MovieService(
+    private val movieRepository: MovieRepository,
+    private val reviewRepository: ReviewRepository
+) {
 
     fun createMovie(movie: Movie): Movie {
         return movieRepository.save(movie)
@@ -27,7 +31,7 @@ class MovieService(private val movieRepository: MovieRepository) {
         genre: Genre?,
         isShowing: Boolean?,
         pageable: Pageable
-    ): Page<MovieDTO> {
+    ): Page<MovieWithAvgRatingDTO> {
         val specification = Specification.where<Movie> { root, _, criteriaBuilder ->
             val predicates: MutableList<Predicate> = mutableListOf()
 
@@ -40,7 +44,12 @@ class MovieService(private val movieRepository: MovieRepository) {
         }
 
         val moviesPage: Page<Movie> = movieRepository.findAll(specification, pageable)
-        return moviesPage.map { movie -> movie.toDTO() }
+
+        return moviesPage.map { movie ->
+            val reviews = reviewRepository.findAllByMovieId(movie.id!!)
+            val avgRating = if (reviews.isEmpty()) null else reviews.map { it.rating }.average()
+            MovieWithAvgRatingDTO(movie.toDTO(), avgRating)
+        }
     }
 
     fun updateMovie(movieId: Long, updatedMovie: Movie): Movie {

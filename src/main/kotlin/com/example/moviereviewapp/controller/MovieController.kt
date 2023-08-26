@@ -3,6 +3,7 @@ package com.example.moviereviewapp.controller
 import com.example.moviereviewapp.domain.Genre
 import com.example.moviereviewapp.domain.Movie
 import com.example.moviereviewapp.dto.MovieDTO
+import com.example.moviereviewapp.dto.MovieWithAvgRatingDTO
 import com.example.moviereviewapp.service.MovieService
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
@@ -37,7 +38,7 @@ class MovieController(private val movieService: MovieService) {
         @RequestParam(required = false) genre: Genre?,
         @RequestParam(required = false) isShowing: Boolean?,
         @PageableDefault(size = 2, direction = Sort.Direction.DESC, sort = ["releaseDate"]) pageable: Pageable,
-    ): ResponseEntity<Page<MovieDTO>> {
+    ): ResponseEntity<Page<MovieWithAvgRatingDTO>> {
         val movies = movieService.getMovies(genre, isShowing, pageable)
         return ResponseEntity(movies, HttpStatus.OK)
     }
