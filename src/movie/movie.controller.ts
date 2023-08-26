@@ -7,6 +7,8 @@ import {
   Body,
   HttpException,
   HttpStatus,
+  Get,
+  NotFoundException,
 } from '@nestjs/common';
 import { MovieService } from './movie.service';
 import { Movie } from './movie.entity';
@@ -35,5 +37,16 @@ export class MovieController {
     @Body() movieData: Partial<Movie>,
   ): Promise<Movie> {
     return this.movieService.updateMovie(id, movieData);
+  }
+
+  @Get(':id')
+  async getMovieById(@Param('id') id: number): Promise<Movie> {
+    const movie = await this.movieService.getMovieById(id);
+
+    if (!movie) {
+      throw new NotFoundException(`Movie with ID ${id} not found`);
+    }
+
+    return movie;
   }
 }

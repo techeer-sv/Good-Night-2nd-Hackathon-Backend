@@ -23,4 +23,8 @@ export class MovieService {
     await this.movieRepository.update(id, movieData);
     return this.movieRepository.findOneBy({ id });
   }
+
+  async getMovieById(id: number): Promise<Movie> {
+    return this.movieRepository.findOneBy({ id });
+  }
 }
