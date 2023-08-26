@@ -33,19 +33,19 @@ export class MovieController {
   @Get()
   async getMovies(
     @Query('genre') genre?: string,
-    @Query('isShowing') isShowing?: boolean,
+    @Query('isShowing') isShowing?: string,
   ): Promise<Movie[]> {
     let movies: Movie[];
-
+    const isShowingBool = isShowing === 'true';
     if (genre && isShowing !== undefined) {
       movies = await this.movieService.getMoviesByGenreAndShowing(
         genre,
-        isShowing,
+        isShowingBool,
       );
     } else if (genre) {
       movies = await this.movieService.getMoviesByGenre(genre);
     } else if (isShowing !== undefined) {
-      movies = await this.movieService.getMoviesByShowing(isShowing);
+      movies = await this.movieService.getMoviesByShowing(isShowingBool);
     } else {
       movies = await this.movieService.getAllMovies();
     }
