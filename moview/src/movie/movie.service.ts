@@ -20,7 +20,7 @@ export class MovieService {
 
   async delete(id: number) {
     const result = await this.MovieRepository.softDelete(id);
-    if (result.affected == 0) throw new NotFoundException('존재하지 않는 영화입니다');
+    if (result.affected == 0) throw new NotFoundException('존재하지 않는 영화입니다.');
   }
 
   async update(id: number, updateMovie: UpdateMovieDto) {
@@ -34,6 +34,7 @@ export class MovieService {
         id: id,
       },
     });
+    if (!result) throw new NotFoundException('존재하지 않는 영화입니다.');
     const getMovieDto = new GetMovieDto();
 
     getMovieDto.title = result.title;
