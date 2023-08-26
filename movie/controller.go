@@ -19,7 +19,7 @@ func Config(api *gin.RouterGroup) {
 }
 
 func createMovie(c *gin.Context) {
-	var request createRequest
+	var request Request
 
 	if err := c.ShouldBind(&request); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "유효하지 않은 요청입니다."})
@@ -78,7 +78,7 @@ func updateMovie(c *gin.Context) {
 		return
 	}
 
-	var request createRequest
+	var request Request
 
 	if err := c.ShouldBind(&request); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "유효하지 않은 요청입니다."})
