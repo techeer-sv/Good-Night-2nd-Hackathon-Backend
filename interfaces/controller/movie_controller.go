@@ -71,7 +71,23 @@ func (c *MovieController) GetMovieById(ctx *fiber.Ctx) error {
 
 func (c *MovieController) ListMoviesByRating(ctx *fiber.Ctx) error {
 	options := &domain.PaginationOptions{}
+	page := ctx.Query("page")
+	if page != "" {
+		err := ctx.QueryParser(options)
+		options.Page, err = strconv.Atoi(page)
+		if err != nil {
+			options.Page = 1
+		}
+	}
 
+	pageSize := ctx.Query("pageSize")
+	if pageSize != "" {
+		err := ctx.QueryParser(options)
+		options.PageSize, err = strconv.Atoi(pageSize)
+		if err != nil {
+			options.PageSize = 10
+		}
+	}
 	movies, err := c.MovieUsecase.ListMoviesByRating(options)
 	if err != nil {
 		return ctx.Status(fiber.StatusInternalServerError).JSON(response.MoviesErrorResponse(err))

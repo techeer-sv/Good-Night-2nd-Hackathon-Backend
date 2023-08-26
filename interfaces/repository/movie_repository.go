@@ -79,13 +79,14 @@ func (r *movieRepository) FindAllByRating(options *domain.PaginationOptions) ([]
 	offset := (options.Page - 1) * options.PageSize
 	limit := options.PageSize
 
+	println(offset)
+	println(limit)
 	// 평점과 함께 영화 정보를 조회하는 쿼리
 	query := `
-		SELECT m.*, AVG(r.rating) as avg_rating
+		SELECT m.id, m.title, m.genre, m.release_date, m.end_date, m.is_showing, m.created_at, m.updated_at, m.deleted_at, COALESCE(AVG(r.rating), 0) as avg_rating
 		FROM movies m
-		LEFT JOIN ratings r ON m.id = r.movie_id
-		WHERE m.deleted_at IS NULL
-		GROUP BY m.id
+				 LEFT JOIN reviews r ON m.id = r.movie_id
+		GROUP BY m.id, m.title, m.genre, m.release_date, m.end_date, m.is_showing, m.created_at, m.updated_at, m.deleted_at
 		ORDER BY avg_rating DESC
 		LIMIT $1 OFFSET $2`
 
@@ -97,14 +98,14 @@ func (r *movieRepository) FindAllByRating(options *domain.PaginationOptions) ([]
 
 	var moviesWithRating []domain.MovieWithRating
 	for rows.Next() {
-		var mwr domain.MovieWithRating
+		var movieWithRating domain.MovieWithRating
 		var movie domain.Movie
 
-		if err := rows.Scan(&movie.ID, &movie.Title, &movie.Genre, &movie.ReleaseDate, &movie.EndDate, &movie.IsShowing, &mwr.AvgRating); err != nil {
+		if err := rows.Scan(&movie.ID, &movie.Title, &movie.Genre, &movie.ReleaseDate, &movie.EndDate, &movie.IsShowing, &movie.CreatedAt, &movie.UpdatedAt, &movie.DeletedAt, &movieWithRating.AvgRating); err != nil {
 			return nil, err
 		}
-		mwr.Movie = movie
-		moviesWithRating = append(moviesWithRating, mwr)
+		movieWithRating.Movie = movie
+		moviesWithRating = append(moviesWithRating, movieWithRating)
 	}
 
 	return moviesWithRating, nil

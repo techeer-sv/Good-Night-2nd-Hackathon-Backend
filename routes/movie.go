@@ -12,7 +12,7 @@ func MovieRouter(app fiber.Router, usecase usecase.MovieUsecase) {
 	app.Post("/movies", movieController.AddMovie)
 	app.Get("/movies", movieController.ListMovies)
 	app.Get("/movies/:id", movieController.GetMovieById)
-	app.Get("/movies/rating", movieController.ListMoviesByRating)
+	app.Get("/movies-rating", movieController.ListMoviesByRating)
 	app.Put("/movies", movieController.UpdateMovieDetails)
 	app.Delete("/movies/:id", movieController.RemoveMovie)
 }
