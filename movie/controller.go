@@ -15,6 +15,7 @@ func Config(api *gin.RouterGroup) {
 	api.GET("/movies/:id", getMovie)
 	api.DELETE("/movies/:id", deleteMovie)
 	api.PUT("/movies/:id", updateMovie)
+	api.GET("/movies", getMovies)
 }
 
 func createMovie(c *gin.Context) {
@@ -92,4 +93,30 @@ func updateMovie(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, movie.fromEntity())
+}
+
+func getMovies(c *gin.Context) {
+	var movies []Movie
+
+	query := db.DB.Order("released_at")
+
+	genre := c.Query("genre")
+	if genre != "" {
+		query = query.Where("genre = ?", genre)
+	}
+
+	showing := c.Query("is_showing")
+	if showing != "" {
+		query = query.Where("is_showing = ?", showing == "true")
+	}
+
+	query.Find(&movies)
+
+	var response []response
+
+	for _, movie := range movies {
+		response = append(response, movie.fromEntity())
+	}
+
+	c.JSON(http.StatusOK, response)
 }
