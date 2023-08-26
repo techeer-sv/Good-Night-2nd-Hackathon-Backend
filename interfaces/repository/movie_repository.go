@@ -16,7 +16,7 @@ func NewMovieRepository(Db *sql.DB) domain.MovieRepository {
 }
 
 func (r *movieRepository) Insert(movie *domain.Movie) error {
-	query := "INSERT INTO movies (title, genre, release_date, end_date, is_showing) VALUES (?, ?, ?, ?, ?, ?, ?)"
+	query := "INSERT INTO movies (title, genre, release_date, end_date, is_showing) VALUES ($1, $2, $3, $4, $5) RETURNING id"
 	_, err := r.Db.Exec(query, movie.Title, movie.Genre, movie.ReleaseDate, movie.EndDate, movie.IsShowing)
 	return err
 }
@@ -56,7 +56,7 @@ func (r *movieRepository) FindAll(options *domain.QueryOptions) ([]domain.Movie,
 }
 
 func (r *movieRepository) FindById(id int) (domain.Movie, error) {
-	query := "SELECT * FROM movies WHERE id = ? AND deleted_at IS NULL"
+	query := "SELECT * FROM movies WHERE id = $1 AND deleted_at IS NULL"
 	row := r.Db.QueryRow(query, id)
 
 	var movie domain.Movie
@@ -83,7 +83,7 @@ func (r *movieRepository) FindAllByRating(options *domain.PaginationOptions) ([]
 		WHERE m.deleted_at IS NULL
 		GROUP BY m.id
 		ORDER BY avg_rating DESC
-		LIMIT ? OFFSET ?`
+		LIMIT $1 OFFSET $2`
 
 	rows, err := r.Db.Query(query, limit, offset)
 	if err != nil {
@@ -107,14 +107,14 @@ func (r *movieRepository) FindAllByRating(options *domain.PaginationOptions) ([]
 }
 
 func (r *movieRepository) Update(movie *domain.Movie) error {
-	query := "UPDATE movies SET title = ?, genre = ?, release_date = ?, end_date = ?, is_showing = ?, updated_at = ? WHERE id = ?"
-	_, err := r.Db.Exec(query, movie.Title, movie.Genre, movie.ReleaseDate, movie.EndDate, movie.IsShowing, time.Now(), movie.ID)
+	query := "UPDATE movies SET title = $1, genre = $2, release_date = $3, end_date = $4, is_showing = $5 WHERE id = $6"
+	_, err := r.Db.Exec(query, movie.Title, movie.Genre, movie.ReleaseDate, movie.EndDate, movie.IsShowing, movie.ID)
 	return err
 
 }
 
 func (r *movieRepository) Delete(movie *domain.Movie) error {
-	query := "UPDATE movies SET deleted_at = ? WHERE id = ?"
+	query := "UPDATE movies SET deleted_at = $1 WHERE id = $2"
 	_, err := r.Db.Exec(query, time.Now(), movie.ID)
 	return err
 }
