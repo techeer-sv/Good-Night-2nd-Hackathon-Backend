@@ -25,6 +25,14 @@ let MoviesService = class MoviesService {
         const movie = this.movieRepository.create(movieData);
         return this.movieRepository.save(movie);
     }
+    async deleteMovie(id) {
+        const movie = await this.movieRepository.findOne({ where: { id } });
+        if (!movie) {
+            throw new common_1.NotFoundException("영화를 찾을 수 없습니다.");
+        }
+        await this.movieRepository.remove(movie);
+        return movie;
+    }
 };
 exports.MoviesService = MoviesService;
 exports.MoviesService = MoviesService = __decorate([

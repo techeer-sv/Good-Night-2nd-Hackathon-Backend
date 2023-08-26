@@ -1,4 +1,4 @@
-import { Controller, Post, Body } from "@nestjs/common";
+import { Controller, Post, Body, Delete, Param } from "@nestjs/common";
 import { MoviesService } from "./movies.service";
 import { Movie } from "./entities/movie.entity";
 import { ApiOperation, ApiResponse } from "@nestjs/swagger";
@@ -21,5 +21,21 @@ export class MoviesController {
   async createMovie(@Body() movieData: Partial<Movie>) {
     const createdMovie = await this.moviesService.createMovie(movieData);
     return createdMovie;
+  }
+
+  //[DELETE] 영화 삭제 API
+  @ApiResponse({
+    status: 500,
+    description: "서버에러!",
+  })
+  @ApiResponse({
+    status: 200,
+    description: "성공!",
+  })
+  @ApiOperation({ summary: "영화삭제" })
+  @Delete("/:id")
+  async deleteMovie(@Param("id") id: string) {
+    const deletedMovie = await this.moviesService.deleteMovie(+id);
+    return deletedMovie;
   }
 }

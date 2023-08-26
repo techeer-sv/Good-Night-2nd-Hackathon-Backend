@@ -24,6 +24,10 @@ let MoviesController = class MoviesController {
         const createdMovie = await this.moviesService.createMovie(movieData);
         return createdMovie;
     }
+    async deleteMovie(id) {
+        const deletedMovie = await this.moviesService.deleteMovie(+id);
+        return deletedMovie;
+    }
 };
 exports.MoviesController = MoviesController;
 __decorate([
@@ -42,6 +46,22 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], MoviesController.prototype, "createMovie", null);
+__decorate([
+    (0, swagger_1.ApiResponse)({
+        status: 500,
+        description: "서버에러!",
+    }),
+    (0, swagger_1.ApiResponse)({
+        status: 200,
+        description: "성공!",
+    }),
+    (0, swagger_1.ApiOperation)({ summary: "영화삭제" }),
+    (0, common_1.Delete)("/:id"),
+    __param(0, (0, common_1.Param)("id")),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], MoviesController.prototype, "deleteMovie", null);
 exports.MoviesController = MoviesController = __decorate([
     (0, common_1.Controller)("movies"),
     __metadata("design:paramtypes", [movies_service_1.MoviesService])
