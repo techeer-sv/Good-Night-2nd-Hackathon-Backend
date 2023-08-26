@@ -1,8 +1,6 @@
 /*
 Repository
-전역적으로 사용하기 위한 함수들의 원형을 정의하는 파일
-최대한 관련된 .kt 파일에서만 사용
-
+SQL을 조회, ORM 사용
 
  */
 package hhs.movie.repository
@@ -15,6 +13,7 @@ import org.springframework.stereotype.Repository
 @Repository
 interface MovieRepository : JpaRepository<Movie, Long> {
 
+    //JPA Repo, 함수의 이름을 통하여 자동으로 함수 생성
     fun findByIsDeletedFalseOrderByReleaseDate(): List<Movie>
 
     fun findByGenreAndIsDeletedFalse(genre: Genre): List<Movie>

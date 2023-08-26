@@ -1,3 +1,6 @@
+/*
+* Repo에서 조회한 데이터를 기반으로, 실제로 사용할 함수를 정의
+* */
 package hhs.movie.service
 
 import hhs.movie.model.Genre
@@ -8,6 +11,7 @@ import java.time.LocalDateTime
 
 @Service
 class MovieService(private val movieRepository: MovieRepository) {
+
 
     fun createMovie(movie: Movie): Movie {
         return movieRepository.save(movie)

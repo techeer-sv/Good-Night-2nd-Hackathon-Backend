@@ -13,7 +13,7 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface ReviewRepository : JpaRepository<Review, Long> {
-
+    //JPA Repo, 함수의 이름을 통하여 자동으로 함수 생성
     fun findByMovieIdOrderByCreatedDateDesc(movieId: Long): List<Review>
 
     fun findByMovieIdAndRatingGreaterThanEqualOrderByCreatedDateDesc(movieId: Long, rating: Double): List<Review>

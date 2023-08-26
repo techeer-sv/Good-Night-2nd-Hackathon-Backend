@@ -6,6 +6,7 @@ import javax.persistence.*
 @Entity
 @Table(name = "reviews")
 data class Review(
+        //id
         @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
         val id: Long? = null,
 
@@ -22,6 +23,7 @@ data class Review(
         @Column(length = 1000) // Adjust the length as needed
         var content: String,
 
+        // 리뷰 작성 날짜
         @Column(name = "created_date", nullable = false, updatable = false)
         val createdDate: LocalDateTime = LocalDateTime.now()
 )

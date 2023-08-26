@@ -16,7 +16,7 @@ class SwaggerConfig {
             .info(apiInfo())
 
     private fun apiInfo() = Info()
-            .title("Springdoc 테스트")
-            .description("Springdoc을 사용한 Swagger UI 테스트")
+            .title("Good-Hackathon MOVIEW")
+            .description("API About Movie&Review")
             .version("1.0.0")
 }

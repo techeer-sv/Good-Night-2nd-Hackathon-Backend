@@ -1,3 +1,6 @@
+/*
+* Service에서 정의한 함수를 사용해서 사용자의 접근에 대한 Response를 반환
+* */
 package hhs.movie.controller
 
 import hhs.movie.model.Genre
