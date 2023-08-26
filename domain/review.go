@@ -17,4 +17,10 @@ type Review struct {
 
 type ReviewRepository interface {
 	Insert(review *Review) error
+	FindAllByMovie(options *ReviewQueryOptions) ([]Review, error)
+}
+
+type ReviewQueryOptions struct {
+	MovieId int
+	Rating  float64
 }

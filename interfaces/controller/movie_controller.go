@@ -31,7 +31,7 @@ func (c *MovieController) AddMovie(ctx *fiber.Ctx) error {
 }
 
 func (c *MovieController) ListMovies(ctx *fiber.Ctx) error {
-	options := &domain.QueryOptions{}
+	options := &domain.RatingQueryOptions{}
 
 	genre := ctx.Query("genre")
 	if genre != "" {

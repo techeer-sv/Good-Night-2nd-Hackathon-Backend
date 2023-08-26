@@ -22,7 +22,7 @@ func (r *movieRepository) Insert(movie *domain.Movie) error {
 	return err
 }
 
-func (r *movieRepository) FindAll(options *domain.QueryOptions) ([]domain.Movie, error) {
+func (r *movieRepository) FindAll(options *domain.RatingQueryOptions) ([]domain.Movie, error) {
 	query := "SELECT * FROM movies WHERE deleted_at IS NULL"
 	var args []interface{}
 	var argCounter int = 1

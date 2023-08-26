@@ -19,7 +19,7 @@ type Movie struct {
 
 type MovieRepository interface {
 	Insert(movie *Movie) error
-	FindAll(options *QueryOptions) ([]Movie, error)
+	FindAll(options *RatingQueryOptions) ([]Movie, error)
 	FindById(id int) (Movie, error)
 	FindAllByRating(options *PaginationOptions) ([]MovieWithRating, error)
 	Update(movie *Movie) error
@@ -36,7 +36,7 @@ type PaginationOptions struct {
 	PageSize int
 }
 
-type QueryOptions struct {
+type RatingQueryOptions struct {
 	Genre     string
 	IsShowing *bool
 }

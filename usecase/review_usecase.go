@@ -7,6 +7,7 @@ import (
 
 type ReviewUsecase interface {
 	AddReview(review *domain.Review) error
+	ListReviewsByMovie(options *domain.ReviewQueryOptions) ([]domain.Review, error)
 }
 
 type reviewUsecase struct {
@@ -22,4 +23,8 @@ func (u *reviewUsecase) AddReview(review *domain.Review) error {
 		return errors.New("Review content cannot be empty")
 	}
 	return u.reviewRepo.Insert(review)
+}
+
+func (u *reviewUsecase) ListReviewsByMovie(options *domain.ReviewQueryOptions) ([]domain.Review, error) {
+	return u.reviewRepo.FindAllByMovie(options)
 }

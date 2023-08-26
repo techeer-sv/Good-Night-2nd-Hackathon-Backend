@@ -7,7 +7,7 @@ import (
 
 type MovieUsecase interface {
 	AddMovie(movie *domain.Movie) error
-	ListMovies(options *domain.QueryOptions) ([]domain.Movie, error)
+	ListMovies(options *domain.RatingQueryOptions) ([]domain.Movie, error)
 	GetMovieById(id int) (domain.Movie, error)
 	ListMoviesByRating(options *domain.PaginationOptions) ([]domain.MovieWithRating, error)
 	UpdateMovieDetails(movie *domain.Movie) error
@@ -29,7 +29,7 @@ func (u *movieUsecase) AddMovie(movie *domain.Movie) error {
 	return u.movieRepo.Insert(movie)
 }
 
-func (u *movieUsecase) ListMovies(options *domain.QueryOptions) ([]domain.Movie, error) {
+func (u *movieUsecase) ListMovies(options *domain.RatingQueryOptions) ([]domain.Movie, error) {
 	return u.movieRepo.FindAll(options)
 }
 
