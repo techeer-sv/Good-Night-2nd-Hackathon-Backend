@@ -5,14 +5,14 @@ export class PostPutMovieDto {
   title: string;
 
   @ApiProperty({ enum: ['스릴러', '로맨스', '코믹', '액션'] })
-  genre: string;
+  genre?: string;
 
   @ApiProperty({ example: 'YYYY-MM-DD' })
-  releaseDate: Date;
+  releaseDate?: Date;
 
   @ApiProperty({ example: 'YYYY-MM-DD' })
-  endDate: Date;
+  endDate?: Date;
 
   @ApiProperty()
-  isShowing: boolean;
+  isShowing?: boolean;
 }
