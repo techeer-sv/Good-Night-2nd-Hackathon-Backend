@@ -117,7 +117,11 @@ export class MoviesService {
     // 삭제된 영화는 보여주지 않는다
     console.log(isShowing, genre);
     const res = await this.movieRepository.find({
-      where: { deletedAt: null, genre, isShowing: isShowing === 'true' },
+      where: {
+        deletedAt: null,
+        genre,
+        isShowing: isShowing === 'true',
+      },
       order: { releaseDate: 'ASC' },
     });
 
