@@ -72,11 +72,11 @@ export class MovieService {
         'movie.releaseDate',
         'movie.endDate',
         'movie.isShowing',
-        'AVG(review.rating)', // 평균 평점 계산
       ])
-      .leftJoin('movie.reviews', 'review') // 리뷰 테이블과 조인
+      .addSelect('AVG(review.rating)', 'avgRating') // avgRating을 추가적인 SELECT 열로 지정
+      .leftJoin('movie.reviews', 'review')
       .groupBy('movie.id')
-      .orderBy('AVG(review.rating)', 'DESC') // 평균 평점을 기준으로 내림차순 정렬
+      .orderBy('avgRating', 'DESC')
       .skip((page - 1) * itemsPerPage)
       .take(itemsPerPage)
       .getManyAndCount();
