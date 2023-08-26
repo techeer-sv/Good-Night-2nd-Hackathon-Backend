@@ -1,6 +1,7 @@
 package Controllers
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -49,6 +50,7 @@ func GetMovies(c *gin.Context) {
 			c.JSON(http.StatusOK, movie)
 		}
 	default:
+		fmt.Println("here")
 		var movie []Models.Movies
 		err := Models.GetAllMovies(&movie)
 		if err != nil {
@@ -62,11 +64,17 @@ func GetMovies(c *gin.Context) {
 func CreateAMovie(c *gin.Context) {
 	var movie Models.Movies
 	c.BindJSON(&movie)
-	err := Models.CreateAMovie(&movie)
-	if err != nil {
+	title := movie.Title
+	fmt.Println(title)
+	if title == "" {
 		c.AbortWithStatus(http.StatusNotFound)
 	} else {
-		c.JSON(http.StatusOK, movie)
+		err := Models.CreateAMovie(&movie)
+		if err != nil {
+			c.AbortWithStatus(http.StatusNotFound)
+		} else {
+			c.JSON(http.StatusOK, movie)
+		}
 	}
 }
 
