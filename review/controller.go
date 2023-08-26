@@ -29,7 +29,7 @@ func createReview(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "리뷰 생성을 실패하였습니다."})
 	}
 
-	c.JSON(http.StatusCreated, r.fromEntity())
+	c.JSON(http.StatusCreated, r.FromEntity())
 }
 
 func getReviews(c *gin.Context) {
@@ -52,10 +52,10 @@ func getReviews(c *gin.Context) {
 
 	query.Find(&reviews)
 
-	var response []response
+	var response []Response
 
 	for _, review := range reviews {
-		response = append(response, review.fromEntity())
+		response = append(response, review.FromEntity())
 	}
 
 	c.JSON(http.StatusOK, response)

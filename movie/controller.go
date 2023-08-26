@@ -2,8 +2,10 @@ package movie
 
 import (
 	"Good-Night-2nd-Hackathon-Backend/config/database"
+	"Good-Night-2nd-Hackathon-Backend/review"
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"strconv"
 	"time"
 )
 
@@ -16,6 +18,7 @@ func Config(api *gin.RouterGroup) {
 	api.DELETE("/movies/:id", deleteMovie)
 	api.PUT("/movies/:id", updateMovie)
 	api.GET("/movies", getMovies)
+	api.GET("/movies-with-avg-rating", getMoviesWithAvgRating)
 }
 
 func createMovie(c *gin.Context) {
@@ -120,6 +123,70 @@ func getMovies(c *gin.Context) {
 
 	for _, movie := range movies {
 		response = append(response, movie.fromEntity())
+	}
+
+	c.JSON(http.StatusOK, response)
+}
+
+type MovieWithAvgRating struct {
+	Movie   response `json:"movie"`
+	Average float64  `json:"averageRating"`
+}
+
+func getMoviesWithAvgRating(c *gin.Context) {
+	pageStr := c.DefaultQuery("page", "1")
+	perPageStr := c.DefaultQuery("perPage", "10")
+
+	page, err := strconv.Atoi(pageStr)
+	if err != nil || page <= 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "유효하지 않은 페이지 번호입니다."})
+		return
+	}
+
+	perPage, err := strconv.Atoi(perPageStr)
+	if err != nil || perPage <= 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "유효하지 않은 페이지당 아이템 수입니다."})
+		return
+	}
+
+	var movies []Movie
+
+	query := db.DB.Order("released_at")
+
+	genre := c.Query("genre")
+	if genre != "" {
+		query = query.Where("genre = ?", genre)
+	}
+
+	showing := c.Query("is_showing")
+	if showing != "" {
+		query = query.Where("is_showing = ?", showing == "true")
+	}
+
+	offset := (page - 1) * perPage
+
+	query.Offset(offset).Limit(perPage).Find(&movies)
+
+	var response []MovieWithAvgRating
+
+	for _, movie := range movies {
+		var reviews []review.Review
+		db.DB.Preload("Reviews").Where("movie_id = ?", movie.ID).Find(&reviews)
+
+		var totalRating float64
+		for _, r := range reviews {
+			totalRating += r.Rating
+		}
+
+		averageRating := 0.0
+		if len(reviews) > 0 {
+			averageRating = totalRating / float64(len(reviews))
+		}
+
+		response = append(response, MovieWithAvgRating{
+			Movie:   movie.fromEntity(),
+			Average: averageRating,
+		})
 	}
 
 	c.JSON(http.StatusOK, response)

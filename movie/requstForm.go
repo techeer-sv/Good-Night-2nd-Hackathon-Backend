@@ -18,3 +18,15 @@ func (r Request) toEntity() Movie {
 		EndAt:      r.EndAt,
 	}
 }
+
+type withRatingAvgResponse struct {
+	ID         uint      `json:"id"`
+	Title      string    `json:"title"`
+	Genre      string    `json:"genre"`
+	RatingAvg  float64   `json:"ratingAvg"`
+	IsShowing  bool      `json:"isShowing"`
+	ReleasedAt time.Time `json:"releasedAt"`
+	EndAt      time.Time `json:"updatedAt"`
+	CreatedAt  time.Time `json:"createdAt"`
+	UpdatedAt  time.Time `json:"updatedAt"`
+}

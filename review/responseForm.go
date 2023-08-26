@@ -2,7 +2,7 @@ package review
 
 import "time"
 
-type response struct {
+type Response struct {
 	ID        uint      `json:"id"`
 	MovieID   uint      `json:"movieID"`
 	Rating    float64   `json:"rating"`
@@ -11,8 +11,8 @@ type response struct {
 	UpdatedAt time.Time `json:"updatedAt"`
 }
 
-func (m Review) fromEntity() response {
-	return response{
+func (m Review) FromEntity() Response {
+	return Response{
 		ID:        m.ID,
 		MovieID:   m.MovieID,
 		Rating:    m.Rating,
