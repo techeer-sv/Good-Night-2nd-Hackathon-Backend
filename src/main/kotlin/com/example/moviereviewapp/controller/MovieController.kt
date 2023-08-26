@@ -1,8 +1,13 @@
 package com.example.moviereviewapp.controller
 
+import com.example.moviereviewapp.domain.Genre
 import com.example.moviereviewapp.domain.Movie
 import com.example.moviereviewapp.dto.MovieDTO
 import com.example.moviereviewapp.service.MovieService
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
+import org.springframework.data.domain.Sort
+import org.springframework.data.web.PageableDefault
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -21,6 +26,16 @@ class MovieController(private val movieService: MovieService) {
     fun getMovieById(@PathVariable id: Long): ResponseEntity<MovieDTO> {
         val movie = movieService.getMovieById(id)
         return ResponseEntity(movie.toDTO(), HttpStatus.OK)
+    }
+
+    @GetMapping
+    fun getMovies(
+        @RequestParam(required = false) genre: Genre?,
+        @RequestParam(required = false) isShowing: Boolean?,
+        @PageableDefault(size = 2, direction = Sort.Direction.DESC, sort = ["releaseDate"]) pageable: Pageable,
+    ): ResponseEntity<Page<MovieDTO>> {
+        val movies = movieService.getMovies(genre, isShowing, pageable)
+        return ResponseEntity(movies, HttpStatus.OK)
     }
 
     @PutMapping("/{id}")

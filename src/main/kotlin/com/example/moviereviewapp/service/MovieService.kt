@@ -1,7 +1,13 @@
 package com.example.moviereviewapp.service
 
+import com.example.moviereviewapp.domain.Genre
 import com.example.moviereviewapp.domain.Movie
+import com.example.moviereviewapp.dto.MovieDTO
 import com.example.moviereviewapp.repository.MovieRepository
+import jakarta.persistence.criteria.Predicate
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
+import org.springframework.data.jpa.domain.Specification
 import org.springframework.stereotype.Service
 
 @Service
@@ -15,6 +21,24 @@ class MovieService(private val movieRepository: MovieRepository) {
         return movieRepository.findById(movieId).orElseThrow {
             throw NoSuchElementException("Movie with ID $movieId not found")
         }
+    }
+
+    fun getMovies(
+        genre: Genre?,
+        isShowing: Boolean?,
+        pageable: Pageable
+    ): Page<MovieDTO> {
+        val specification = Specification.where<Movie> { root, _, criteriaBuilder ->
+            val predicates: MutableList<Predicate> = mutableListOf()
+
+            genre?.let { predicates.add(criteriaBuilder.equal(root.get<Genre>("genre"), genre)) }
+            isShowing?.let { predicates.add(criteriaBuilder.equal(root.get<Boolean>("isShowing"), isShowing)) }
+
+            criteriaBuilder.and(*predicates.toTypedArray())
+        }
+
+        val moviesPage: Page<Movie> = movieRepository.findAll(specification, pageable)
+        return moviesPage.map { movie -> movie.toDTO() }
     }
 
     fun updateMovie(movieId: Long, updatedMovie: Movie): Movie {
@@ -31,10 +55,6 @@ class MovieService(private val movieRepository: MovieRepository) {
         }
 
         return movieRepository.save(existingMovie)
-    }
-
-    fun getAllMovies(): List<Movie> {
-        return movieRepository.findAll()
     }
 
     fun softDeleteMovie(movieId: Long) {

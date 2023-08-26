@@ -95,6 +95,41 @@ class MovieControllerTest {
     }
 
     @Test
+    fun testGetMovies() {
+        val movies = listOf(
+            Movie(null, "Movie 1", Genre.ROMANCE, LocalDate.of(2023, 8, 1), LocalDate.of(2023, 8, 31), true),
+            Movie(null, "Movie 2", Genre.THRILLER, LocalDate.of(2023, 8, 1), LocalDate.of(2023, 8, 31), false),
+            Movie(null, "Movie 3", Genre.ROMANCE, LocalDate.of(2023, 8, 1), LocalDate.of(2023, 8, 31), false),
+            Movie(null, "Movie 4", Genre.ROMANCE, LocalDate.of(2023, 8, 1), LocalDate.of(2023, 8, 31), false),
+            Movie(null, "Movie 5", Genre.ROMANCE, LocalDate.of(2025, 8, 1), LocalDate.of(2023, 8, 31), false),
+            Movie(null, "Movie 6", Genre.ROMANCE, LocalDate.of(2023, 8, 1), LocalDate.of(2023, 8, 31), false),
+            Movie(null, "Movie 7", Genre.ROMANCE, LocalDate.of(2024, 8, 1), LocalDate.of(2023, 8, 31), false)
+        )
+        val savedMovies = movieRepository.saveAll(movies)
+
+        val pageSize = 2
+
+        try {
+            mockMvc.perform(
+                MockMvcRequestBuilders.get("/api/movies")
+                    .param("page", "0")
+                    .param("size", pageSize.toString())
+                    .param("genre", "ROMANCE")
+                    .param("isShowing", "false")
+                    .contentType(MediaType.APPLICATION_JSON)
+            )
+                .andExpect(MockMvcResultMatchers.status().isOk)
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content").isArray)
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content.length()").value(pageSize))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.totalPages").value(3))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].title").value("Movie 5"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content[1].title").value("Movie 7"))
+        } finally {
+            movieRepository.deleteAll(savedMovies)
+        }
+    }
+
+    @Test
     fun testUpdateMovie() {
         val savedInitialMovie = createInitialMovie()
 
