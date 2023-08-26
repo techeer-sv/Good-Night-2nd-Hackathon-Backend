@@ -1,34 +1,25 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { MoviesService } from './movies.service';
-import { CreateMovieDto } from './dto/create-movie.dto';
-import { UpdateMovieDto } from './dto/update-movie.dto';
+import { Controller, Post, Body } from "@nestjs/common";
+import { MoviesService } from "./movies.service";
+import { Movie } from "./entities/movie.entity";
+import { ApiOperation, ApiResponse } from "@nestjs/swagger";
 
-@Controller('movies')
+@Controller("movies")
 export class MoviesController {
   constructor(private readonly moviesService: MoviesService) {}
 
+  //[CREATE] 영화 등록 API
+  @ApiResponse({
+    status: 500,
+    description: "서버에러!",
+  })
+  @ApiResponse({
+    status: 200,
+    description: "성공!",
+  })
+  @ApiOperation({ summary: "영화등록" })
   @Post()
-  create(@Body() createMovieDto: CreateMovieDto) {
-    return this.moviesService.create(createMovieDto);
-  }
-
-  @Get()
-  findAll() {
-    return this.moviesService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.moviesService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateMovieDto: UpdateMovieDto) {
-    return this.moviesService.update(+id, updateMovieDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.moviesService.remove(+id);
+  async createMovie(@Body() movieData: Partial<Movie>) {
+    const createdMovie = await this.moviesService.createMovie(movieData);
+    return createdMovie;
   }
 }

@@ -1,9 +1,7 @@
-import { CreateMovieDto } from './dto/create-movie.dto';
-import { UpdateMovieDto } from './dto/update-movie.dto';
+import { Movie } from "./entities/movie.entity";
+import { Repository } from "typeorm";
 export declare class MoviesService {
-    create(createMovieDto: CreateMovieDto): string;
-    findAll(): string;
-    findOne(id: number): string;
-    update(id: number, updateMovieDto: UpdateMovieDto): string;
-    remove(id: number): string;
+    private readonly movieRepository;
+    constructor(movieRepository: Repository<Movie>);
+    createMovie(movieData: Partial<Movie>): Promise<Movie>;
 }

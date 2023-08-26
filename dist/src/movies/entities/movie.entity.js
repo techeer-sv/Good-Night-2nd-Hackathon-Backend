@@ -19,17 +19,37 @@ __decorate([
     __metadata("design:type", Number)
 ], Movie.prototype, "id", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ nullable: false }),
     __metadata("design:type", String)
-], Movie.prototype, "name", void 0);
+], Movie.prototype, "title", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", Number)
-], Movie.prototype, "age", void 0);
-__decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ type: "enum", enum: ["스릴러", "로맨스", "코믹", "액션"] }),
     __metadata("design:type", String)
-], Movie.prototype, "breed", void 0);
+], Movie.prototype, "genre", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: "date" }),
+    __metadata("design:type", Date)
+], Movie.prototype, "releaseDate", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: "date" }),
+    __metadata("design:type", Date)
+], Movie.prototype, "endDate", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ default: true }),
+    __metadata("design:type", Boolean)
+], Movie.prototype, "isShowing", void 0);
+__decorate([
+    (0, typeorm_1.CreateDateColumn)(),
+    __metadata("design:type", Date)
+], Movie.prototype, "createdAt", void 0);
+__decorate([
+    (0, typeorm_1.UpdateDateColumn)(),
+    __metadata("design:type", Date)
+], Movie.prototype, "updatedAt", void 0);
+__decorate([
+    (0, typeorm_1.DeleteDateColumn)(),
+    __metadata("design:type", Date)
+], Movie.prototype, "deletedAt", void 0);
 exports.Movie = Movie = __decorate([
     (0, typeorm_1.Entity)()
 ], Movie);
