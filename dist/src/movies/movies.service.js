@@ -44,6 +44,15 @@ let MoviesService = class MoviesService {
         const movie = this.movieRepository.create(movieData);
         return this.movieRepository.save(movie);
     }
+    async updateMovie(id, movieData) {
+        const existingMovie = await this.movieRepository.findOne({ where: { id } });
+        if (!existingMovie) {
+            return undefined;
+        }
+        Object.assign(existingMovie, movieData);
+        const updatedMovie = await this.movieRepository.save(existingMovie);
+        return updatedMovie;
+    }
     async deleteMovie(id) {
         const movie = await this.movieRepository.findOne({ where: { id } });
         if (!movie) {

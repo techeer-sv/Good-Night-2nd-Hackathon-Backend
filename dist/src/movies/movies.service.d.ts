@@ -6,5 +6,6 @@ export declare class MoviesService {
     getOneMovie(id: number): Promise<Movie>;
     getFilteredAndSortedMovies(genre: string, isShowing: boolean): Promise<Movie[]>;
     createMovie(movieData: Partial<Movie>): Promise<Movie>;
+    updateMovie(id: number, movieData: Partial<Movie>): Promise<Movie | undefined>;
     deleteMovie(id: number): Promise<Movie>;
 }

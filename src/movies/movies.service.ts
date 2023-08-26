@@ -43,6 +43,22 @@ export class MoviesService {
     return this.movieRepository.save(movie);
   }
 
+  async updateMovie(
+    id: number,
+    movieData: Partial<Movie>
+  ): Promise<Movie | undefined> {
+    const existingMovie = await this.movieRepository.findOne({ where: { id } });
+
+    if (!existingMovie) {
+      return undefined;
+    }
+
+    Object.assign(existingMovie, movieData);
+    const updatedMovie = await this.movieRepository.save(existingMovie);
+
+    return updatedMovie;
+  }
+
   async deleteMovie(id: number): Promise<Movie> {
     const movie = await this.movieRepository.findOne({ where: { id } });
 

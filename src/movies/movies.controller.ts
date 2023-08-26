@@ -6,6 +6,7 @@ import {
   Param,
   Get,
   Query,
+  Patch,
 } from "@nestjs/common";
 import { MoviesService } from "./movies.service";
 import { Movie } from "./entities/movie.entity";
@@ -64,6 +65,25 @@ export class MoviesController {
   async createMovie(@Body() movieData: Partial<Movie>) {
     const createdMovie = await this.moviesService.createMovie(movieData);
     return createdMovie;
+  }
+
+  //[UPDATE] 영화 수정 API
+  @ApiResponse({
+    status: 500,
+    description: "서버 에러!",
+  })
+  @ApiResponse({
+    status: 200,
+    description: "성공!",
+  })
+  @ApiOperation({ summary: "영화 수정" })
+  @Patch("/:id")
+  async updateMovie(
+    @Body() movieData: Partial<Movie>,
+    @Param("id") id: string
+  ) {
+    const updatedMovie = await this.moviesService.updateMovie(+id, movieData);
+    return updatedMovie;
   }
 
   //[DELETE] 영화 삭제 API

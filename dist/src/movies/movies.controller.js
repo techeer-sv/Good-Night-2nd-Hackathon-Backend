@@ -32,6 +32,10 @@ let MoviesController = class MoviesController {
         const createdMovie = await this.moviesService.createMovie(movieData);
         return createdMovie;
     }
+    async updateMovie(movieData, id) {
+        const updatedMovie = await this.moviesService.updateMovie(+id, movieData);
+        return updatedMovie;
+    }
     async deleteMovie(id) {
         const deletedMovie = await this.moviesService.deleteMovie(+id);
         return deletedMovie;
@@ -86,6 +90,23 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], MoviesController.prototype, "createMovie", null);
+__decorate([
+    (0, swagger_1.ApiResponse)({
+        status: 500,
+        description: "서버 에러!",
+    }),
+    (0, swagger_1.ApiResponse)({
+        status: 200,
+        description: "성공!",
+    }),
+    (0, swagger_1.ApiOperation)({ summary: "영화 수정" }),
+    (0, common_1.Patch)("/:id"),
+    __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.Param)("id")),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, String]),
+    __metadata("design:returntype", Promise)
+], MoviesController.prototype, "updateMovie", null);
 __decorate([
     (0, swagger_1.ApiResponse)({
         status: 500,

@@ -6,5 +6,6 @@ export declare class MoviesController {
     getOneMovie(id: string): Promise<Movie>;
     getTermMovie(genre: string, isShowing: boolean): Promise<Movie[]>;
     createMovie(movieData: Partial<Movie>): Promise<Movie>;
+    updateMovie(movieData: Partial<Movie>, id: string): Promise<Movie>;
     deleteMovie(id: string): Promise<Movie>;
 }
