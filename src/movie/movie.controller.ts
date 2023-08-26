@@ -10,6 +10,8 @@ import {
   Get,
   NotFoundException,
   Query,
+  DefaultValuePipe,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { MovieService } from './movie.service';
 import { Movie } from './movie.entity';
@@ -72,5 +74,14 @@ export class MovieController {
     }
 
     return movies;
+  }
+
+  @Get('/rating')
+  async getMoviesByRating(
+    @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
+    @Query('itemsPerPage', new DefaultValuePipe(10), ParseIntPipe)
+    itemsPerPage: number,
+  ): Promise<{ movies: Movie[]; total: number }> {
+    return this.movieService.getMoviesByRating(page, itemsPerPage);
   }
 }
