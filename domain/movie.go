@@ -13,3 +13,27 @@ type Movie struct {
 	UpdatedAt   time.Time  `json:"updated_at"`
 	DeletedAt   *time.Time `json:"deleted_at"`
 }
+
+type MovieRepository interface {
+	Insert(movie *Movie) error
+	FindAll(options *QueryOptions) ([]Movie, error)
+	FindById(id int) (Movie, error)
+	FindAllByRating(options *PaginationOptions) ([]MovieWithRating, error)
+	Update(movie *Movie) error
+	Delete(movie *Movie) error
+}
+
+type MovieWithRating struct {
+	Movie     Movie
+	AvgRating float64
+}
+
+type PaginationOptions struct {
+	Page     int
+	PageSize int
+}
+
+type QueryOptions struct {
+	Genre     string
+	IsShowing *bool
+}
