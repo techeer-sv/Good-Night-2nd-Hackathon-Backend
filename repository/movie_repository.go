@@ -9,3 +9,5 @@ type MovieRepository interface {
 	GetByID(id int) (*models.Movie, error)
 	GetAll() ([]*models.Movie, error)
 }
+
+var _ MovieRepository = &InMemoryMovieRepository{}

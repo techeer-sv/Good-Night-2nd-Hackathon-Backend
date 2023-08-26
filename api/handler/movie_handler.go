@@ -13,7 +13,7 @@ import (
 
 var movieService *services.MovieService
 
-func InitializeHandler(repo repository.MovieRepository) {
+func InitializeMovieHandler(repo repository.MovieRepository) {
 	movieService = services.NewMovieService(repo)
 }
 
