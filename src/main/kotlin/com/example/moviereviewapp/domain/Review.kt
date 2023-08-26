@@ -2,27 +2,42 @@ package com.example.moviereviewapp.domain
 
 import com.example.moviereviewapp.dto.ReviewDTO
 import jakarta.persistence.*
-import java.time.LocalDateTime
+import org.hibernate.annotations.CreationTimestamp
+import java.sql.Timestamp
+import java.time.Instant
 
 @Entity
 data class Review(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null,
-    val rating: Double,
-    val content: String,
-    val createdDateTime: LocalDateTime = LocalDateTime.now(),
 
-    @ManyToOne
-    val movie: Movie
+    val movieId: Long,
+    var rating: Double,
+    var content: String,
+
+    @CreationTimestamp
+    val createAt: Timestamp? = null,
+    var updatedAt: Timestamp? = null,
+    var isDeleted: Boolean = false,
 ) {
+    init {
+        if (rating > 5.0) {
+            rating = 5.0
+        }
+    }
+
+    @PreUpdate
+    private fun onUpdate() {
+        updatedAt = Timestamp.from(Instant.now())
+    }
+
     fun toDTO(): ReviewDTO {
         return ReviewDTO(
             id = id,
+            movieId = movieId,
             rating = rating,
-            content = content,
-            createdDateTime = createdDateTime,
-            movieId = movie.id ?: throw IllegalStateException("Movie ID cannot be null")
+            content = content
         )
     }
 }

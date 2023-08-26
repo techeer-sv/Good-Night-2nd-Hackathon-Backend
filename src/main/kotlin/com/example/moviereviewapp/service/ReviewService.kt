@@ -14,4 +14,8 @@ class ReviewService(private val reviewRepository: ReviewRepository) {
     fun getReviewsByMovie(movieId: Long): List<Review> {
         return reviewRepository.findAllByMovieId(movieId)
     }
+
+    fun hardDeleteReview(reviewId: Long) {
+        reviewRepository.deleteById(reviewId)
+    }
 }

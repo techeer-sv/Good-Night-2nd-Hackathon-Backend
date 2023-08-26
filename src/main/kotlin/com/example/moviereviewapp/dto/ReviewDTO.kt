@@ -1,23 +1,19 @@
 package com.example.moviereviewapp.dto
 
-import com.example.moviereviewapp.domain.Movie
 import com.example.moviereviewapp.domain.Review
-import java.time.LocalDateTime
 
 data class ReviewDTO(
     val id: Long?,
+    val movieId: Long,
     val rating: Double,
     val content: String,
-    val createdDateTime: LocalDateTime,
-    val movieId: Long
 ) {
-    fun toEntity(movie: Movie): Review {
+    fun toEntity(): Review {
         return Review(
             id = id,
+            movieId = movieId,
             rating = rating,
-            content = content,
-            createdDateTime = createdDateTime,
-            movie = movie
+            content = content
         )
     }
 }
