@@ -1,12 +1,13 @@
-import { Controller, Get } from '@nestjs/common';
+import {Body, Controller, Get, Param, Post} from '@nestjs/common';
 import { ReviewService } from './review.service';
+import { CreateReviewDto } from './dto/create-review.dto';
 
-@Controller('api/v1/review')
+@Controller('api/v1/reviews')
 export class ReviewController {
   constructor(private readonly appService: ReviewService) {}
 
-  @Get()
-  getHello(): string {
-    return this.appService.getHello();
+  @Post(':id')
+  create(@Param('id') id: number, @Body() createReviewDto: CreateReviewDto) {
+    return this.appService.create(id, createReviewDto);
   }
 }

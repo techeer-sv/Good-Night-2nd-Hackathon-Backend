@@ -20,7 +20,7 @@ export class Review {
   @Column()
   review: string;
 
-  @ManyToOne(() => Movie)
+  @ManyToOne(() => Movie, (movie) => movie.review)
   movie: Movie;
 
   @CreateDateColumn({

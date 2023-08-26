@@ -22,7 +22,6 @@ export class MovieController {
   @Post() // 영화 등록
   @UsePipes(new ValidationPipe())
   createMovie(@Body() createMovieDto: CreateMovieDto) {
-    console.log(createMovieDto.title);
     return this.appService.create(createMovieDto);
   }
 

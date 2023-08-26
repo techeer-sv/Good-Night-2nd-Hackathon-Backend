@@ -26,7 +26,7 @@ export class Movie {
   @Column('datetime')
   endDate: Date;
 
-  @OneToMany(() => Review, (review) => review.id)
+  @OneToMany(() => Review, (review) => review.movie)
   review: Review[];
 
   @Column()

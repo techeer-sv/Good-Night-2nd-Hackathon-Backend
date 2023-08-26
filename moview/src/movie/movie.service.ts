@@ -15,7 +15,6 @@ export class MovieService {
   ) {}
 
   async create(CreateMovieDto: CreateMovieDto) {
-    console.log(CreateMovieDto.title);
     return await this.MovieRepository.save(CreateMovieDto);
   }
 
