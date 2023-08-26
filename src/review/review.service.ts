@@ -26,4 +26,21 @@ export class ReviewService {
     const review = this.reviewRepository.create({ rating, content, movie });
     return this.reviewRepository.save(review);
   }
+
+  async getMovieReviews(
+    movieId: number,
+    minRating?: number,
+  ): Promise<Review[]> {
+    const queryBuilder = this.reviewRepository
+      .createQueryBuilder('review')
+      .leftJoinAndSelect('review.movie', 'movie')
+      .where('movie.id = :movieId', { movieId })
+      .orderBy('review.createdAt', 'DESC');
+
+    if (minRating !== undefined) {
+      queryBuilder.andWhere('review.rating >= :minRating', { minRating });
+    }
+
+    return queryBuilder.getMany();
+  }
 }

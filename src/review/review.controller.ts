@@ -1,4 +1,13 @@
-import { Controller, Post, Body, Param, ParseIntPipe } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  Param,
+  ParseIntPipe,
+  Get,
+  Query,
+  ParseFloatPipe,
+} from '@nestjs/common';
 import { ReviewService } from './review.service';
 import { CreateReviewDto } from '../dto/create-review.dto';
 import { Review } from './review.entity';
@@ -19,5 +28,13 @@ export class ReviewController {
       content,
     );
     return review;
+  }
+
+  @Get(':movieId')
+  async getMovieReviews(
+    @Param('movieId', ParseIntPipe) movieId: number,
+    @Query('minRating', ParseFloatPipe) minRating?: number,
+  ): Promise<Review[]> {
+    return this.reviewService.getMovieReviews(movieId, minRating);
   }
 }
