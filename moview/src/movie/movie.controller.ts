@@ -1,16 +1,16 @@
-import { Body, Controller, Delete, Param, Post, Put, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, UsePipes, ValidationPipe } from '@nestjs/common';
 import { MovieService } from './movie.service';
-import { CreateMovieDto } from './dto/create-movie.dto';
-import { UpdateMovieDto } from './dto/update-movie.dto';
+import { CreateMovieDto } from './dto/req/create-movie.dto';
+import { UpdateMovieDto } from './dto/req/update-movie.dto';
 
-@Controller('api/v1/movie')
+@Controller('api/v1/movies')
 export class MovieController {
   constructor(private readonly appService: MovieService) {}
 
-  // @Get() // 영화 등록
-  // getHello(): string {
-  //   return this.appService.getHello();
-  // }
+  @Get(':id')
+  searchMovie(@Param('id') id: number) {
+    return this.appService.search(id);
+  }
 
   @Post() // 영화 등록
   @UsePipes(new ValidationPipe())
