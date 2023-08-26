@@ -1,7 +1,9 @@
 import { Module } from '@nestjs/common';
+import { MovieModule } from './movie/movie.module';
+import { databaseProviders } from './config/database.providers';
 
 @Module({
-  imports: [],
+  imports: [MovieModule],
   controllers: [],
   providers: [...databaseProviders],
   exports: [...databaseProviders],
