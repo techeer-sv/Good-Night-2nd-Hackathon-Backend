@@ -1,11 +1,18 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Query, UsePipes, ValidationPipe } from '@nestjs/common';
 import { MovieService } from './movie.service';
 import { CreateMovieDto } from './dto/req/create-movie.dto';
 import { UpdateMovieDto } from './dto/req/update-movie.dto';
+import { isBooleanObject } from 'util/types';
 
 @Controller('api/v1/movies')
 export class MovieController {
   constructor(private readonly appService: MovieService) {}
+
+  @Get()
+  searchMovies(@Query() query: { status: string; genre: string }) {
+    console.log(isBooleanObject(query.status));
+    return this.appService.searchAll(query.status, query.genre);
+  }
 
   @Get(':id')
   searchMovie(@Param('id') id: number) {

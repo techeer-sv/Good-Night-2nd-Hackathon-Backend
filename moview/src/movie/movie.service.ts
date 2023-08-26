@@ -5,6 +5,7 @@ import { Movie } from './domain/movie.entity';
 import { Repository } from 'typeorm';
 import { UpdateMovieDto } from './dto/req/update-movie.dto';
 import { GetMovieDto } from './dto/res/get-movie.dto';
+import { plainToInstance } from 'class-transformer';
 
 @Injectable()
 export class MovieService {
@@ -44,5 +45,16 @@ export class MovieService {
     getMovieDto.releaseStatus = result.releaseStatus;
 
     return getMovieDto;
+  }
+
+  async searchAll(status: string, genre: string) {
+    const nStatus = status === 'true';
+    const result = await this.MovieRepository.find({
+      where: { releaseStatus: nStatus, genre: genre },
+      order: { releaseDate: 'ASC' },
+    });
+    const nResult = result.map((v) => plainToInstance(GetMovieDto, v));
+    console.log(nResult);
+    return nResult;
   }
 }

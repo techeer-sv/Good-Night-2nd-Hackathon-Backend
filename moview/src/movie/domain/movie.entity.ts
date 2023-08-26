@@ -1,5 +1,14 @@
 // eslint-disable-next-line prettier/prettier
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  DeleteDateColumn,
+  Entity,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn
+} from 'typeorm';
+import { Review } from '../../review/domain/review.entity';
 @Entity()
 export class Movie {
   @PrimaryGeneratedColumn()
@@ -16,6 +25,9 @@ export class Movie {
 
   @Column('datetime')
   endDate: Date;
+
+  @OneToMany(() => Review, (review) => review.id)
+  review: Review[];
 
   @Column()
   releaseStatus: boolean;
