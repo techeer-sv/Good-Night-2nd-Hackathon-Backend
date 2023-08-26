@@ -1,3 +1,4 @@
+import { IsInt, IsString, Length } from "class-validator";
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -9,12 +10,16 @@ import {
 
 @Entity()
 export class Movie {
+  @IsInt()
   @PrimaryGeneratedColumn()
   id: number;
 
+  @IsString()
+  @Length(10, 200)
   @Column({ nullable: false })
   title: string;
 
+  @IsString()
   @Column({ type: "enum", enum: ["스릴러", "로맨스", "코믹", "액션"] })
   genre: string;
 

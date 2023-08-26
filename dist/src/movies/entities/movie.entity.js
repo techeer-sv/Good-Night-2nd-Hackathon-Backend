@@ -10,19 +10,24 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Movie = void 0;
+const class_validator_1 = require("class-validator");
 const typeorm_1 = require("typeorm");
 let Movie = class Movie {
 };
 exports.Movie = Movie;
 __decorate([
+    (0, class_validator_1.IsInt)(),
     (0, typeorm_1.PrimaryGeneratedColumn)(),
     __metadata("design:type", Number)
 ], Movie.prototype, "id", void 0);
 __decorate([
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.Length)(10, 200),
     (0, typeorm_1.Column)({ nullable: false }),
     __metadata("design:type", String)
 ], Movie.prototype, "title", void 0);
 __decorate([
+    (0, class_validator_1.IsString)(),
     (0, typeorm_1.Column)({ type: "enum", enum: ["스릴러", "로맨스", "코믹", "액션"] }),
     __metadata("design:type", String)
 ], Movie.prototype, "genre", void 0);
