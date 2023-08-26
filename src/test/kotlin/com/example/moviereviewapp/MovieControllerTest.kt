@@ -6,8 +6,7 @@ import com.example.moviereviewapp.dto.MovieDTO
 import com.example.moviereviewapp.repository.MovieRepository
 import com.example.moviereviewapp.service.MovieService
 import com.fasterxml.jackson.databind.ObjectMapper
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertNotNull
+import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
@@ -124,6 +123,19 @@ class MovieControllerTest {
         assertEquals(updatedMovieDTO.isShowing, updatedMovie.isShowing)
 
         assert(savedInitialMovie.updatedAt != updatedMovie.updatedAt) { "updatedAt should have changed" }
+
+        savedInitialMovie.id?.let { movieService.hardDeleteMovie(it) }
+    }
+
+    @Test
+    fun testSoftDeleteMovie() {
+        val savedInitialMovie = createInitialMovie()
+
+        mockMvc.perform(MockMvcRequestBuilders.delete("/api/movies/${savedInitialMovie.id}"))
+            .andExpect(MockMvcResultMatchers.status().isNoContent)
+
+        val deletedMovie = movieService.getMovieById(savedInitialMovie.id!!)
+        assertTrue(deletedMovie.isDeleted)
 
         savedInitialMovie.id?.let { movieService.hardDeleteMovie(it) }
     }

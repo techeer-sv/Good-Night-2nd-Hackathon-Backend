@@ -22,10 +22,16 @@ class MovieController(private val movieService: MovieService) {
         val movie = movieService.getMovieById(id)
         return ResponseEntity(movie.toDTO(), HttpStatus.OK)
     }
-    
+
     @PutMapping("/{id}")
     fun updateMovie(@PathVariable id: Long, @RequestBody updatedMovie: Movie): ResponseEntity<MovieDTO> {
         val movie = movieService.updateMovie(id, updatedMovie)
         return ResponseEntity(movie.toDTO(), HttpStatus.OK)
+    }
+
+    @DeleteMapping("/{id}")
+    fun deleteMovie(@PathVariable id: Long): ResponseEntity<Unit> {
+        movieService.softDeleteMovie(id)
+        return ResponseEntity(HttpStatus.NO_CONTENT)
     }
 }
