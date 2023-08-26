@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Movie } from "./entities/movie.entity";
-import { Repository } from "typeorm";
+import { MoreThanOrEqual, Repository } from "typeorm";
 import { Review } from "src/reviews/entities/reviews.entity";
 
 @Injectable()
@@ -11,7 +11,6 @@ export class MoviesService {
     private readonly movieRepository: Repository<Movie>
   ) {}
 
-  @InjectRepository(Review)
   private readonly reviewRepository: Repository<Review>;
 
   async getOneMovie(id: number): Promise<Movie> {
@@ -93,5 +92,18 @@ export class MoviesService {
     review.movie = movie;
 
     return this.reviewRepository.save(review);
+  }
+
+  async getMovieReviews(movieId: number, minRating: number): Promise<Review[]> {
+    const reviews = await this.reviewRepository.find({
+      where: {
+        id: movieId,
+        rating: minRating ? MoreThanOrEqual(minRating) : MoreThanOrEqual(0),
+      },
+      order: {
+        createdAt: "DESC",
+      },
+    });
+    return reviews;
   }
 }

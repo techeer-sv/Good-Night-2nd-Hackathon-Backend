@@ -75,12 +75,20 @@ let MoviesService = class MoviesService {
         review.movie = movie;
         return this.reviewRepository.save(review);
     }
+    async getMovieReviews(movieId, minRating) {
+        const reviews = await this.reviewRepository.find({
+            where: {
+                id: movieId,
+                rating: minRating ? (0, typeorm_2.MoreThanOrEqual)(minRating) : (0, typeorm_2.MoreThanOrEqual)(0),
+            },
+            order: {
+                createdAt: "DESC",
+            },
+        });
+        return reviews;
+    }
 };
 exports.MoviesService = MoviesService;
-__decorate([
-    (0, typeorm_1.InjectRepository)(reviews_entity_1.Review),
-    __metadata("design:type", typeorm_2.Repository)
-], MoviesService.prototype, "reviewRepository", void 0);
 exports.MoviesService = MoviesService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectRepository)(movie_entity_1.Movie)),

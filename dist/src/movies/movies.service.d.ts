@@ -11,4 +11,5 @@ export declare class MoviesService {
     updateMovie(id: number, movieData: Partial<Movie>): Promise<Movie | undefined>;
     deleteMovie(id: number): Promise<Movie>;
     createReview(movieId: number, rating: number, content: string): Promise<Review>;
+    getMovieReviews(movieId: number, minRating: number): Promise<Review[]>;
 }

@@ -10,4 +10,5 @@ export declare class MoviesController {
     updateMovie(movieData: Partial<Movie>, id: string): Promise<Movie>;
     deleteMovie(id: string): Promise<Movie>;
     createReview(movieId: string, rating: number, content: string): Promise<Review>;
+    getMovieReviews(id: number, minRating: number): Promise<Review[]>;
 }

@@ -43,6 +43,9 @@ let MoviesController = class MoviesController {
     async createReview(movieId, rating, content) {
         return this.moviesService.createReview(+movieId, rating, content);
     }
+    async getMovieReviews(id, minRating) {
+        return this.moviesService.getMovieReviews(id, minRating);
+    }
 };
 exports.MoviesController = MoviesController;
 __decorate([
@@ -127,6 +130,15 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], MoviesController.prototype, "deleteMovie", null);
 __decorate([
+    (0, swagger_1.ApiResponse)({
+        status: 500,
+        description: "서버에러!",
+    }),
+    (0, swagger_1.ApiResponse)({
+        status: 200,
+        description: "성공!",
+    }),
+    (0, swagger_1.ApiOperation)({ summary: "리뷰등록" }),
     (0, common_1.Post)("/:id/reviews"),
     __param(0, (0, common_1.Param)("id", common_1.ParseIntPipe)),
     __param(1, (0, common_1.Body)("rating")),
@@ -135,6 +147,23 @@ __decorate([
     __metadata("design:paramtypes", [String, Number, String]),
     __metadata("design:returntype", Promise)
 ], MoviesController.prototype, "createReview", null);
+__decorate([
+    (0, swagger_1.ApiResponse)({
+        status: 500,
+        description: "서버에러!",
+    }),
+    (0, swagger_1.ApiResponse)({
+        status: 200,
+        description: "성공!",
+    }),
+    (0, swagger_1.ApiOperation)({ summary: "리뷰 목록 조회" }),
+    (0, common_1.Get)(":id/reviews"),
+    __param(0, (0, common_1.Param)("id")),
+    __param(1, (0, common_1.Query)("minRating")),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number, Number]),
+    __metadata("design:returntype", Promise)
+], MoviesController.prototype, "getMovieReviews", null);
 exports.MoviesController = MoviesController = __decorate([
     (0, common_1.Controller)("movies"),
     __metadata("design:paramtypes", [movies_service_1.MoviesService])

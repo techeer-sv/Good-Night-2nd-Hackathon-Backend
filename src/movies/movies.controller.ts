@@ -105,6 +105,15 @@ export class MoviesController {
   }
 
   //[CREATED] 리뷰 등록
+  @ApiResponse({
+    status: 500,
+    description: "서버에러!",
+  })
+  @ApiResponse({
+    status: 200,
+    description: "성공!",
+  })
+  @ApiOperation({ summary: "리뷰등록" })
   @Post("/:id/reviews")
   async createReview(
     @Param("id", ParseIntPipe) movieId: string,
@@ -112,5 +121,22 @@ export class MoviesController {
     @Body("content") content: string
   ): Promise<Review> {
     return this.moviesService.createReview(+movieId, rating, content);
+  }
+
+  @ApiResponse({
+    status: 500,
+    description: "서버에러!",
+  })
+  @ApiResponse({
+    status: 200,
+    description: "성공!",
+  })
+  @ApiOperation({ summary: "리뷰 목록 조회" })
+  @Get(":id/reviews")
+  async getMovieReviews(
+    @Param("id") id: number,
+    @Query("minRating") minRating: number
+  ): Promise<Review[]> {
+    return this.moviesService.getMovieReviews(id, minRating);
   }
 }
