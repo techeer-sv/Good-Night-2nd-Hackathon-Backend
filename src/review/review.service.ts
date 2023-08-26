@@ -1,5 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { Review } from './review.entity';
 import { Movie } from '../movie/movie.entity';
@@ -7,9 +6,9 @@ import { Movie } from '../movie/movie.entity';
 @Injectable()
 export class ReviewService {
   constructor(
-    @InjectRepository(Review)
+    @Inject('REVIEW_REPOSITORY')
     private reviewRepository: Repository<Review>,
-    @InjectRepository(Movie)
+    @Inject('MOVIE_REPOSITORY')
     private movieRepository: Repository<Movie>,
   ) {}
 

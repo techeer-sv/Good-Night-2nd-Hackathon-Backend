@@ -1,12 +1,11 @@
 import { Module } from '@nestjs/common';
 import { MovieModule } from './movie/movie.module';
-import { databaseProviders } from './config/database.providers';
 import { ReviewModule } from './review/review.module';
+import { DatabaseModule } from './config/database.module';
 
 @Module({
-  imports: [MovieModule, ReviewModule],
+  imports: [MovieModule, ReviewModule, DatabaseModule],
   controllers: [],
-  providers: [...databaseProviders],
-  exports: [...databaseProviders],
+  providers: [],
 })
 export class AppModule {}
