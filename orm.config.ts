@@ -1,9 +1,10 @@
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
+import { Movie } from 'src/movies/entities/movie.entity';
 
 function ormConfig(): TypeOrmModuleOptions {
   const commonConf = {
-    SYNCRONIZE: false,
-    ENTITIES: [__dirname + '/domain/*{.ts,.js}'],
+    SYNCRONIZE: true,
+    ENTITIES: [Movie],
     MIGRATIONS: [__dirname + '/migrations/**/*{.ts,.js}'],
     MIGRATIONS_RUN: false,
   };
