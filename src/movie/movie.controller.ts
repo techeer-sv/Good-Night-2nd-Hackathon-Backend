@@ -2,6 +2,7 @@ import {
   Controller,
   Post,
   Delete,
+  Put,
   Param,
   Body,
   HttpException,
@@ -26,5 +27,13 @@ export class MovieController {
   @Delete(':id')
   async deleteMovie(@Param('id') id: number): Promise<void> {
     await this.movieService.deleteMovie(id);
+  }
+
+  @Put(':id')
+  async updateMovie(
+    @Param('id') id: number,
+    @Body() movieData: Partial<Movie>,
+  ): Promise<Movie> {
+    return this.movieService.updateMovie(id, movieData);
   }
 }

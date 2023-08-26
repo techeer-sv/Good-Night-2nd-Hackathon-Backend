@@ -18,4 +18,9 @@ export class MovieService {
   async deleteMovie(id: number): Promise<void> {
     await this.movieRepository.softDelete(id);
   }
+
+  async updateMovie(id: number, movieData: Partial<Movie>): Promise<Movie> {
+    await this.movieRepository.update(id, movieData);
+    return this.movieRepository.findOneBy({ id });
+  }
 }
