@@ -27,4 +27,36 @@ export class MovieService {
   async getMovieById(id: number): Promise<Movie> {
     return this.movieRepository.findOneBy({ id });
   }
+
+  async getAllMovies(): Promise<Movie[]> {
+    return this.movieRepository.find({
+      order: { releaseDate: 'ASC' },
+    });
+  }
+
+  async getMoviesByGenre(genre: string): Promise<Movie[]> {
+    return this.movieRepository.find({
+      where: { genre },
+      order: { releaseDate: 'ASC' },
+    });
+  }
+
+  async getMoviesByShowing(isShowing: boolean): Promise<Movie[]> {
+    return this.movieRepository.find({
+      where: { isShowing },
+      order: { releaseDate: 'ASC' },
+    });
+  }
+
+  async getMoviesByGenreAndShowing(
+    genre: string,
+    isShowing: boolean,
+  ): Promise<Movie[]> {
+    const movies = await this.movieRepository.find({
+      where: { genre, isShowing },
+      order: { releaseDate: 'ASC' },
+    });
+
+    return movies;
+  }
 }

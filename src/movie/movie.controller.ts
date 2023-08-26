@@ -9,6 +9,7 @@ import {
   HttpStatus,
   Get,
   NotFoundException,
+  Query,
 } from '@nestjs/common';
 import { MovieService } from './movie.service';
 import { Movie } from './movie.entity';
@@ -48,5 +49,28 @@ export class MovieController {
     }
 
     return movie;
+  }
+
+  @Get()
+  async getMovies(
+    @Query('genre') genre: string,
+    @Query('isShowing') isShowing: boolean,
+  ): Promise<Movie[]> {
+    let movies: Movie[];
+
+    if (genre && isShowing !== undefined) {
+      movies = await this.movieService.getMoviesByGenreAndShowing(
+        genre,
+        isShowing,
+      );
+    } else if (genre) {
+      movies = await this.movieService.getMoviesByGenre(genre);
+    } else if (isShowing !== undefined) {
+      movies = await this.movieService.getMoviesByShowing(isShowing);
+    } else {
+      movies = await this.movieService.getAllMovies();
+    }
+
+    return movies;
   }
 }
