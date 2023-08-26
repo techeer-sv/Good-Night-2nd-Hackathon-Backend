@@ -1,3 +1,4 @@
+import { Review } from "src/reviews/entities/reviews.entity";
 export declare class Movie {
     id: number;
     title: string;
@@ -8,4 +9,5 @@ export declare class Movie {
     createdAt: Date;
     updatedAt: Date;
     deletedAt: Date;
+    reviews: Review[];
 }

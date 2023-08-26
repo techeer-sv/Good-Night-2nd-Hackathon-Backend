@@ -11,6 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Movie = void 0;
 const class_validator_1 = require("class-validator");
+const reviews_entity_1 = require("../../reviews/entities/reviews.entity");
 const typeorm_1 = require("typeorm");
 let Movie = class Movie {
 };
@@ -55,6 +56,10 @@ __decorate([
     (0, typeorm_1.DeleteDateColumn)(),
     __metadata("design:type", Date)
 ], Movie.prototype, "deletedAt", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => reviews_entity_1.Review, (review) => review.movie),
+    __metadata("design:type", Array)
+], Movie.prototype, "reviews", void 0);
 exports.Movie = Movie = __decorate([
     (0, typeorm_1.Entity)()
 ], Movie);

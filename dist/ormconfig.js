@@ -2,10 +2,11 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ormConfig = void 0;
 const movie_entity_1 = require("./src/movies/entities/movie.entity");
+const reviews_entity_1 = require("./src/reviews/entities/reviews.entity");
 function ormConfig() {
     const commonConf = {
         SYNCRONIZE: true,
-        ENTITIES: [movie_entity_1.Movie],
+        ENTITIES: [movie_entity_1.Movie, reviews_entity_1.Review],
         MIGRATIONS: [__dirname + "/migrations/**/*{.ts,.js}"],
         MIGRATIONS_RUN: false,
     };

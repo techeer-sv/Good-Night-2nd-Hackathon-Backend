@@ -1,4 +1,6 @@
 import { IsInt, IsString, Length } from "class-validator";
+import { relative } from "path";
+import { Review } from "src/reviews/entities/reviews.entity";
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -6,6 +8,7 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   DeleteDateColumn,
+  OneToMany,
 } from "typeorm";
 
 @Entity()
@@ -40,4 +43,7 @@ export class Movie {
 
   @DeleteDateColumn()
   deletedAt: Date;
+
+  @OneToMany(() => Review, (review) => review.movie)
+  reviews: Review[];
 }
