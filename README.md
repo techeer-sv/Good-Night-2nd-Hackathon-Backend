@@ -108,6 +108,14 @@
 
 <br><br>
 
+## 전체 기능 구현 완료
+### mysql 실행
+```
+docker run --name mysql-container -e MYSQL_ROOT_PASSWORD=tmppassword -e MYSQL_DATABASE=movie_review_db -p 3306:3306 -d mysql:latest
+```
+
+<br><br>
+
 ---
 
 # 기여해주신 분
