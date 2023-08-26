@@ -19,7 +19,7 @@ data class Review(
     @CreationTimestamp
     val createdAt: Timestamp? = null,
     var updatedAt: Timestamp? = null,
-    var isDeleted: Boolean = false,
+    var deleted: Boolean = false,
 ) {
     init {
         if (rating > 5.0) {

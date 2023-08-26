@@ -25,7 +25,7 @@ data class Movie(
     @CreationTimestamp
     val createdAt: Timestamp? = null,
     var updatedAt: Timestamp? = null,
-    var isDeleted: Boolean = false,
+    var deleted: Boolean = false,
 ) {
     @PreUpdate
     private fun onUpdate() {

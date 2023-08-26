@@ -18,6 +18,10 @@ class MovieController(private val movieService: MovieService) {
 
     @PostMapping
     fun createMovie(@RequestBody movieDTO: MovieDTO): ResponseEntity<MovieDTO> {
+        if (movieDTO.title.isBlank()) {
+            throw IllegalArgumentException("Movie title cannot be null or empty")
+        }
+
         val savedMovie = movieService.createMovie(movieDTO.toEntity())
         return ResponseEntity(savedMovie.toDTO(), HttpStatus.CREATED)
     }

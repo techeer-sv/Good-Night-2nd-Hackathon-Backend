@@ -18,7 +18,7 @@ class MovieService(private val movieRepository: MovieRepository) {
     }
 
     fun getMovieById(movieId: Long): Movie {
-        return movieRepository.findById(movieId).orElseThrow {
+        return movieRepository.findByIdAndDeletedIsFalse(movieId).orElseThrow {
             throw NoSuchElementException("Movie with ID $movieId not found")
         }
     }
@@ -34,6 +34,8 @@ class MovieService(private val movieRepository: MovieRepository) {
             genre?.let { predicates.add(criteriaBuilder.equal(root.get<Genre>("genre"), genre)) }
             isShowing?.let { predicates.add(criteriaBuilder.equal(root.get<Boolean>("isShowing"), isShowing)) }
 
+            predicates.add(criteriaBuilder.equal(root.get<Boolean>("deleted"), false))
+
             criteriaBuilder.and(*predicates.toTypedArray())
         }
 
@@ -42,7 +44,7 @@ class MovieService(private val movieRepository: MovieRepository) {
     }
 
     fun updateMovie(movieId: Long, updatedMovie: Movie): Movie {
-        val existingMovie = movieRepository.findById(movieId).orElseThrow {
+        val existingMovie = movieRepository.findByIdAndDeletedIsFalse(movieId).orElseThrow {
             throw NoSuchElementException("Movie with ID $movieId not found")
         }
 
@@ -58,10 +60,10 @@ class MovieService(private val movieRepository: MovieRepository) {
     }
 
     fun softDeleteMovie(movieId: Long) {
-        val movie = movieRepository.findById(movieId).orElseThrow {
+        val movie = movieRepository.findByIdAndDeletedIsFalse(movieId).orElseThrow {
             throw NoSuchElementException("Movie with ID $movieId not found")
         }
-        movie.isDeleted = true
+        movie.deleted = true
         movieRepository.save(movie)
     }
 

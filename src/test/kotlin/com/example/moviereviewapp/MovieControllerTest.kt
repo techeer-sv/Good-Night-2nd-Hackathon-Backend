@@ -169,8 +169,8 @@ class MovieControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.delete("/api/movies/${savedInitialMovie.id}"))
             .andExpect(MockMvcResultMatchers.status().isNoContent)
 
-        val deletedMovie = movieService.getMovieById(savedInitialMovie.id!!)
-        assertTrue(deletedMovie.isDeleted)
+        val deletedMovie = movieRepository.findById(savedInitialMovie.id!!).get()
+        assertTrue(deletedMovie.deleted)
 
         savedInitialMovie.id?.let { movieService.hardDeleteMovie(it) }
     }
