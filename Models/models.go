@@ -1,8 +1,6 @@
 package Models
 
-import (
-	"time"
-)
+import "time"
 
 type Movies struct {
 	ID        uint       `json:"id"`
@@ -25,9 +23,9 @@ type Reviews struct {
 }
 
 type CustomDate struct {
-	Year  int
-	Month int
-	Day   int
+	Year  int `json:"year"`
+	Month int `json:"month"`
+	Day   int `json:"day"`
 }
 
 func (b *Reviews) TableName() string {
