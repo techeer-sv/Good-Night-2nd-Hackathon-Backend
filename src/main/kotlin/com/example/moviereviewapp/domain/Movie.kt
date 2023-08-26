@@ -23,7 +23,7 @@ data class Movie(
     var isShowing: Boolean,
 
     @CreationTimestamp
-    val createAt: Timestamp? = null,
+    val createdAt: Timestamp? = null,
     var updatedAt: Timestamp? = null,
     var isDeleted: Boolean = false,
 ) {

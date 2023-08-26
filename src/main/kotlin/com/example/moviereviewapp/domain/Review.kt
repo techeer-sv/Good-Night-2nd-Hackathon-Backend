@@ -17,7 +17,7 @@ data class Review(
     var content: String,
 
     @CreationTimestamp
-    val createAt: Timestamp? = null,
+    val createdAt: Timestamp? = null,
     var updatedAt: Timestamp? = null,
     var isDeleted: Boolean = false,
 ) {
