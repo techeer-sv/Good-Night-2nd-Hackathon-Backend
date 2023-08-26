@@ -3,6 +3,7 @@ import { Repository } from "typeorm";
 export declare class MoviesService {
     private readonly movieRepository;
     constructor(movieRepository: Repository<Movie>);
+    getOneMovie(id: number): Promise<Movie>;
     createMovie(movieData: Partial<Movie>): Promise<Movie>;
     deleteMovie(id: number): Promise<Movie>;
 }

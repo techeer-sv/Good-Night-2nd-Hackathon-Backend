@@ -10,6 +10,14 @@ export class MoviesService {
     private readonly movieRepository: Repository<Movie>
   ) {}
 
+  async getOneMovie(id: number): Promise<Movie> {
+    const movie = await this.movieRepository.findOne({ where: { id } });
+    if (!movie) {
+      throw new NotFoundException("영화를 찾을 수 없습니다.");
+    }
+    return movie;
+  }
+
   async createMovie(movieData: Partial<Movie>): Promise<Movie> {
     const movie = this.movieRepository.create(movieData);
     return this.movieRepository.save(movie);

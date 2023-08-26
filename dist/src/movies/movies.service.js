@@ -21,6 +21,13 @@ let MoviesService = class MoviesService {
     constructor(movieRepository) {
         this.movieRepository = movieRepository;
     }
+    async getOneMovie(id) {
+        const movie = await this.movieRepository.findOne({ where: { id } });
+        if (!movie) {
+            throw new common_1.NotFoundException("영화를 찾을 수 없습니다.");
+        }
+        return movie;
+    }
     async createMovie(movieData) {
         const movie = this.movieRepository.create(movieData);
         return this.movieRepository.save(movie);

@@ -20,6 +20,10 @@ let MoviesController = class MoviesController {
     constructor(moviesService) {
         this.moviesService = moviesService;
     }
+    async getOneMovie(id) {
+        const getMovie = await this.moviesService.getOneMovie(+id);
+        return getMovie;
+    }
     async createMovie(movieData) {
         const createdMovie = await this.moviesService.createMovie(movieData);
         return createdMovie;
@@ -30,6 +34,22 @@ let MoviesController = class MoviesController {
     }
 };
 exports.MoviesController = MoviesController;
+__decorate([
+    (0, swagger_1.ApiResponse)({
+        status: 500,
+        description: "서버에러!",
+    }),
+    (0, swagger_1.ApiResponse)({
+        status: 200,
+        description: "성공!",
+    }),
+    (0, swagger_1.ApiOperation)({ summary: "영화 단일 조회" }),
+    (0, common_1.Get)("/:id"),
+    __param(0, (0, common_1.Param)("id")),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], MoviesController.prototype, "getOneMovie", null);
 __decorate([
     (0, swagger_1.ApiResponse)({
         status: 500,

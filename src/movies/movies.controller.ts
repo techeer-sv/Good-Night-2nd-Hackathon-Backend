@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Delete, Param } from "@nestjs/common";
+import { Controller, Post, Body, Delete, Param, Get } from "@nestjs/common";
 import { MoviesService } from "./movies.service";
 import { Movie } from "./entities/movie.entity";
 import { ApiOperation, ApiResponse } from "@nestjs/swagger";
@@ -6,6 +6,22 @@ import { ApiOperation, ApiResponse } from "@nestjs/swagger";
 @Controller("movies")
 export class MoviesController {
   constructor(private readonly moviesService: MoviesService) {}
+
+  //[GET]영화 단일 조회
+  @ApiResponse({
+    status: 500,
+    description: "서버에러!",
+  })
+  @ApiResponse({
+    status: 200,
+    description: "성공!",
+  })
+  @ApiOperation({ summary: "영화 단일 조회" })
+  @Get("/:id")
+  async getOneMovie(@Param("id") id: string) {
+    const getMovie = await this.moviesService.getOneMovie(+id);
+    return getMovie;
+  }
 
   //[CREATE] 영화 등록 API
   @ApiResponse({
