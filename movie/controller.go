@@ -19,14 +19,18 @@ func Config(api *gin.RouterGroup) {
 }
 
 func createMovie(c *gin.Context) {
-	var req createRequest
+	var request createRequest
 
-	if err := c.ShouldBind(&req); err != nil {
+	if err := c.ShouldBind(&request); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "유효하지 않은 요청입니다."})
 		return
 	}
 
-	m := req.toEntity()
+	if request.Title == "" {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "제목은 필수 입력값 입니다."})
+	}
+
+	m := request.toEntity()
 
 	if err := db.DB.Create(&m).Error; err != nil {
 		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "영화 등록에 실패하였습니다."})
