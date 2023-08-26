@@ -17,7 +17,3 @@ type Movie struct {
 	UpdatedAt  time.Time `gorm:"autoUpdateTime"`
 	IsShowing  bool
 }
-
-func AutoMigrate(db *gorm.DB) {
-	db.AutoMigrate(&Movie{})
-}
