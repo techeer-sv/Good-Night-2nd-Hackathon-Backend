@@ -80,6 +80,22 @@ class MovieControllerTest {
     }
 
     @Test
+    fun testGetMovieById() {
+        val savedInitialMovie = createInitialMovie()
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/movies/${savedInitialMovie.id}"))
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(savedInitialMovie.id))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.title").value(savedInitialMovie.title))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.genre").value(savedInitialMovie.genre.toString()))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.releaseDate").value(savedInitialMovie.releaseDate.toString()))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.endDate").value(savedInitialMovie.endDate.toString()))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.isShowing").value(savedInitialMovie.isShowing))
+
+        savedInitialMovie.id?.let { movieService.hardDeleteMovie(it) }
+    }
+
+    @Test
     fun testUpdateMovie() {
         val savedInitialMovie = createInitialMovie()
 

@@ -17,6 +17,12 @@ class MovieController(private val movieService: MovieService) {
         return ResponseEntity(savedMovie.toDTO(), HttpStatus.CREATED)
     }
 
+    @GetMapping("/{id}")
+    fun getMovieById(@PathVariable id: Long): ResponseEntity<MovieDTO> {
+        val movie = movieService.getMovieById(id)
+        return ResponseEntity(movie.toDTO(), HttpStatus.OK)
+    }
+    
     @PutMapping("/{id}")
     fun updateMovie(@PathVariable id: Long, @RequestBody updatedMovie: Movie): ResponseEntity<MovieDTO> {
         val movie = movieService.updateMovie(id, updatedMovie)
