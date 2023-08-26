@@ -14,4 +14,8 @@ export class MovieService {
     const movie = this.movieRepository.create(movieData);
     return this.movieRepository.save(movie);
   }
+
+  async deleteMovie(id: number): Promise<void> {
+    await this.movieRepository.softDelete(id);
+  }
 }

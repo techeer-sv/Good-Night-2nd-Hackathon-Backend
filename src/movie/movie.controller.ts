@@ -1,6 +1,8 @@
 import {
   Controller,
   Post,
+  Delete,
+  Param,
   Body,
   HttpException,
   HttpStatus,
@@ -19,5 +21,10 @@ export class MovieController {
     }
 
     return this.movieService.createMovie(movieData);
+  }
+
+  @Delete(':id')
+  async deleteMovie(@Param('id') id: number): Promise<void> {
+    await this.movieService.deleteMovie(id);
   }
 }
