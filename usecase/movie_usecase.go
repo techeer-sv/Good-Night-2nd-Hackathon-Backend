@@ -3,7 +3,6 @@ package usecase
 import (
 	"errors"
 	"server/domain"
-	"time"
 )
 
 type MovieUsecase interface {
@@ -50,7 +49,6 @@ func (u *movieUsecase) UpdateMovieDetails(movie *domain.Movie) error {
 	if movie.Title == "" || movie.Genre == "" {
 		return errors.New("Movie title or genre cannot be empty")
 	}
-	movie.UpdatedAt = time.Now()
 	return u.movieRepo.Update(movie)
 }
 

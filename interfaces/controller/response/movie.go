@@ -7,7 +7,6 @@ import (
 )
 
 type Movie struct {
-	ID          int        `json:"id"`
 	Title       string     `json:"title"`
 	Genre       string     `json:"genre"`
 	ReleaseDate *time.Time `json:"release_date"`
@@ -17,7 +16,6 @@ type Movie struct {
 
 func MovieSuccessResponse(data *domain.Movie, message string) *fiber.Map {
 	movie := Movie{
-		ID:          data.ID,
 		Title:       data.Title,
 		Genre:       data.Genre,
 		ReleaseDate: data.ReleaseDate,

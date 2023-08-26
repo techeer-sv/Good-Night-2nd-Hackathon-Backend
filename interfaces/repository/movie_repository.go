@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"errors"
 	"server/domain"
+	"strconv"
 	"time"
 )
 
@@ -24,15 +25,18 @@ func (r *movieRepository) Insert(movie *domain.Movie) error {
 func (r *movieRepository) FindAll(options *domain.QueryOptions) ([]domain.Movie, error) {
 	query := "SELECT * FROM movies WHERE deleted_at IS NULL"
 	var args []interface{}
+	var argCounter int = 1
 
 	if options.Genre != "" {
-		query += " AND genre = ?"
+		query += " AND genre = $" + strconv.Itoa(argCounter)
 		args = append(args, options.Genre)
+		argCounter++
 	}
 
 	if options.IsShowing != nil {
-		query += " AND is_showing = ?"
+		query += " AND is_showing = $" + strconv.Itoa(argCounter)
 		args = append(args, *options.IsShowing)
+		argCounter++
 	}
 
 	query += " ORDER BY release_date ASC"
@@ -46,7 +50,7 @@ func (r *movieRepository) FindAll(options *domain.QueryOptions) ([]domain.Movie,
 	var movies []domain.Movie
 	for rows.Next() {
 		var movie domain.Movie
-		if err := rows.Scan(&movie.ID, &movie.Title, &movie.Genre, &movie.ReleaseDate, &movie.EndDate, &movie.IsShowing); err != nil {
+		if err := rows.Scan(&movie.ID, &movie.Title, &movie.Genre, &movie.ReleaseDate, &movie.EndDate, &movie.IsShowing, &movie.CreatedAt, &movie.UpdatedAt, &movie.DeletedAt); err != nil {
 			return nil, err
 		}
 		movies = append(movies, movie)
