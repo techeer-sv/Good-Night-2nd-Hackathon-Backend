@@ -40,6 +40,9 @@ let MoviesController = class MoviesController {
         const deletedMovie = await this.moviesService.deleteMovie(+id);
         return deletedMovie;
     }
+    async createReview(movieId, rating, content) {
+        return this.moviesService.createReview(+movieId, rating, content);
+    }
 };
 exports.MoviesController = MoviesController;
 __decorate([
@@ -123,6 +126,15 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], MoviesController.prototype, "deleteMovie", null);
+__decorate([
+    (0, common_1.Post)("/:id/reviews"),
+    __param(0, (0, common_1.Param)("id", common_1.ParseIntPipe)),
+    __param(1, (0, common_1.Body)("rating")),
+    __param(2, (0, common_1.Body)("content")),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Number, String]),
+    __metadata("design:returntype", Promise)
+], MoviesController.prototype, "createReview", null);
 exports.MoviesController = MoviesController = __decorate([
     (0, common_1.Controller)("movies"),
     __metadata("design:paramtypes", [movies_service_1.MoviesService])

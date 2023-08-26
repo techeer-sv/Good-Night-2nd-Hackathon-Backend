@@ -17,6 +17,7 @@ const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const movie_entity_1 = require("./entities/movie.entity");
 const typeorm_2 = require("typeorm");
+const reviews_entity_1 = require("../reviews/entities/reviews.entity");
 let MoviesService = class MoviesService {
     constructor(movieRepository) {
         this.movieRepository = movieRepository;
@@ -61,8 +62,25 @@ let MoviesService = class MoviesService {
         await this.movieRepository.remove(movie);
         return movie;
     }
+    async createReview(movieId, rating, content) {
+        const movie = await this.movieRepository.findOne({
+            where: { id: movieId },
+        });
+        if (!movie) {
+            throw new common_1.NotFoundException("Movie not found");
+        }
+        const review = new reviews_entity_1.Review();
+        review.rating = rating;
+        review.content = content;
+        review.movie = movie;
+        return this.reviewRepository.save(review);
+    }
 };
 exports.MoviesService = MoviesService;
+__decorate([
+    (0, typeorm_1.InjectRepository)(reviews_entity_1.Review),
+    __metadata("design:type", typeorm_2.Repository)
+], MoviesService.prototype, "reviewRepository", void 0);
 exports.MoviesService = MoviesService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectRepository)(movie_entity_1.Movie)),

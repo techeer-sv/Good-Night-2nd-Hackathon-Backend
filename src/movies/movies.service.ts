@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Movie } from "./entities/movie.entity";
 import { Repository } from "typeorm";
+import { Review } from "src/reviews/entities/reviews.entity";
 
 @Injectable()
 export class MoviesService {
@@ -9,6 +10,9 @@ export class MoviesService {
     @InjectRepository(Movie)
     private readonly movieRepository: Repository<Movie>
   ) {}
+
+  @InjectRepository(Review)
+  private readonly reviewRepository: Repository<Review>;
 
   async getOneMovie(id: number): Promise<Movie> {
     const movie = await this.movieRepository.findOne({ where: { id } });
@@ -69,5 +73,25 @@ export class MoviesService {
     await this.movieRepository.remove(movie);
 
     return movie;
+  }
+
+  async createReview(
+    movieId: number,
+    rating: number,
+    content: string
+  ): Promise<Review> {
+    const movie = await this.movieRepository.findOne({
+      where: { id: movieId },
+    });
+    if (!movie) {
+      throw new NotFoundException("Movie not found");
+    }
+
+    const review = new Review();
+    review.rating = rating;
+    review.content = content;
+    review.movie = movie;
+
+    return this.reviewRepository.save(review);
   }
 }

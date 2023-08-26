@@ -7,10 +7,12 @@ import {
   Get,
   Query,
   Patch,
+  ParseIntPipe,
 } from "@nestjs/common";
 import { MoviesService } from "./movies.service";
 import { Movie } from "./entities/movie.entity";
 import { ApiOperation, ApiResponse } from "@nestjs/swagger";
+import { Review } from "src/reviews/entities/reviews.entity";
 
 @Controller("movies")
 export class MoviesController {
@@ -100,5 +102,15 @@ export class MoviesController {
   async deleteMovie(@Param("id") id: string) {
     const deletedMovie = await this.moviesService.deleteMovie(+id);
     return deletedMovie;
+  }
+
+  //[CREATED] 리뷰 등록
+  @Post("/:id/reviews")
+  async createReview(
+    @Param("id", ParseIntPipe) movieId: string,
+    @Body("rating") rating: number,
+    @Body("content") content: string
+  ): Promise<Review> {
+    return this.moviesService.createReview(+movieId, rating, content);
   }
 }
