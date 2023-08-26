@@ -1,6 +1,7 @@
-import { Body, Controller, Delete, Param, Post, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Delete, Param, Post, Put, UsePipes, ValidationPipe } from '@nestjs/common';
 import { MovieService } from './movie.service';
 import { CreateMovieDto } from './dto/create-movie.dto';
+import { UpdateMovieDto } from './dto/update-movie.dto';
 
 @Controller('api/v1/movie')
 export class MovieController {
@@ -21,5 +22,10 @@ export class MovieController {
   @Delete(':id') // 영화 삭제
   deleteMovie(@Param('id') id: number) {
     return this.appService.delete(id);
+  }
+
+  @Put(':id')
+  updateMovie(@Param('id') id: number, @Body() updateMovieDto: UpdateMovieDto) {
+    return this.appService.update(id, updateMovieDto);
   }
 }
