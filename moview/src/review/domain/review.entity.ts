@@ -5,7 +5,7 @@ import {
     DeleteDateColumn,
     Entity,
     ManyToOne,
-    PrimaryGeneratedColumn,
+    PrimaryGeneratedColumn, RelationId,
     UpdateDateColumn
 } from 'typeorm';
 import { Movie } from '../../movie/domain/movie.entity';
@@ -19,6 +19,10 @@ export class Review {
 
   @Column()
   review: string;
+
+  @RelationId((self: Review) => self.movie)
+  @Column()
+  movieId: number;
 
   @ManyToOne(() => Movie, (movie) => movie.review)
   movie: Movie;
