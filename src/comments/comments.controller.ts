@@ -20,9 +20,9 @@ export class CommentsController {
     return this.commentsService.create(createCommentDto);
   }
 
-  @Get()
-  findAll() {
-    return this.commentsService.findAll();
+  @Get(':movieId')
+  findAll(@Param('movieId') movieId: string) {
+    return this.commentsService.findAll(+movieId);
   }
 
   @Get(':id')
