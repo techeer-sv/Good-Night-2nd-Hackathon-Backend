@@ -2,14 +2,26 @@ package models
 
 import "time"
 
+// Movie represents a movie
+// swagger:model
 type Movie struct {
-	ID          int        `json:"id"`
-	Title       string     `json:"title"`
-	Genre       string     `json:"genre"`
-	ReleaseDate time.Time  `json:"release_date"`
-	EndDate     time.Time  `json:"end_date"`
-	IsShowing   bool       `json:"is_showing"`
-	CreatedAt   time.Time  `json:"created_at"`
-	UpdatedAt   time.Time  `json:"updated_at"`
-	DeletedAt   *time.Time `json:"deleted_at,omitempty"`
+	ID           int
+	Title        string
+	Genre        string
+	ReleaseDate  time.Time
+	EndDate      time.Time
+	IsNowShowing bool
+	CreatedAt    time.Time
+	UpdatedAt    time.Time
+	IsDeleted    bool
+}
+
+// Review represents a review
+// swagger:model
+type Review struct {
+	ID        int
+	MovieID   int
+	Rating    float64
+	Content   string
+	CreatedAt time.Time
 }
