@@ -118,6 +118,16 @@
 
 ---
 
+# 개발환경
+
+- Go 1.20
+- Gorm
+- Gin
+- MySQL 8.0
+- Docker
+- Docker-compose
+- Swagger
+
 # 📝 실행 방법
 
 ### 실행
