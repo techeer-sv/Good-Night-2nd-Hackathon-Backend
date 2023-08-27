@@ -47,6 +47,10 @@ func (c *MovieController) ListMovies(ctx *fiber.Ctx) error {
 	}
 
 	movies, err := c.MovieUsecase.ListMovies(options)
+	if movies == nil {
+		movies = []domain.Movie{}
+	}
+
 	if err != nil {
 		return ctx.Status(fiber.StatusInternalServerError).JSON(response.MoviesErrorResponse(err))
 	}
@@ -89,6 +93,11 @@ func (c *MovieController) ListMoviesByRating(ctx *fiber.Ctx) error {
 		}
 	}
 	movies, err := c.MovieUsecase.ListMoviesByRating(options)
+
+	if movies == nil {
+		movies = []domain.MovieWithRating{}
+	}
+
 	if err != nil {
 		return ctx.Status(fiber.StatusInternalServerError).JSON(response.MoviesErrorResponse(err))
 	}

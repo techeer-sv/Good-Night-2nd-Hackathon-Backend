@@ -36,7 +36,6 @@ func (c *ReviewController) ListReviewsByMovie(ctx *fiber.Ctx) error {
 	ratingStr := ctx.Query("rating", "0")
 	movieIdStr := ctx.Params("movieId")
 
-	println(ratingStr)
 	if movieIdStr == "" {
 		return ctx.Status(fiber.StatusBadRequest).JSON(response.ReviewErrorResponse(errors.New("movieId is missing")))
 	}
@@ -54,6 +53,9 @@ func (c *ReviewController) ListReviewsByMovie(ctx *fiber.Ctx) error {
 	}
 
 	reviews, err := c.ReviewUsecase.ListReviewsByMovie(options)
+	if reviews == nil {
+		reviews = []domain.Review{}
+	}
 	if err != nil {
 		return ctx.Status(fiber.StatusInternalServerError).JSON(response.ReviewErrorResponse(err))
 	}
