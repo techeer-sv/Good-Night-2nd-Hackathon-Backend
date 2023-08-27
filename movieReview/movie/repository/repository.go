@@ -94,7 +94,7 @@ func (r *Repository) FindAllByScore(params domain.PaginationParams) ([]domain.Sc
 			"GROUP BY movies.id "+
 			"ORDER BY ScoreAvg DESC "+
 			"LIMIT ? OFFSET ?",
-		params.Size, params.Page*params.Size,
+		params.Size-1, (params.Page-1)*params.Size,
 	).Scan(&res).Error
 	if err != nil {
 		return []domain.ScoreRankResponse{}, err
