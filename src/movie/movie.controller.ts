@@ -27,7 +27,19 @@ export class MovieController {
       throw new HttpException('Title is required', HttpStatus.BAD_REQUEST);
     }
 
-    return this.movieService.createMovie(movieData);
+    const currentDate = new Date();
+    const releaseDate = new Date(movieData.releaseDate);
+    const endDate = new Date(movieData.endDate);
+
+    const currentDateString = currentDate.toISOString().split('T')[0];
+    const releaseDateString = releaseDate.toISOString().split('T')[0];
+    const endDateString = endDate.toISOString().split('T')[0];
+
+    const isShowing =
+      releaseDateString <= currentDateString &&
+      currentDateString <= endDateString;
+
+    return this.movieService.createMovie({ ...movieData, isShowing });
   }
 
   @Get()
