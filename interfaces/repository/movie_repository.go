@@ -79,8 +79,6 @@ func (r *movieRepository) FindAllByRating(options *domain.PaginationOptions) ([]
 	offset := (options.Page - 1) * options.PageSize
 	limit := options.PageSize
 
-	println(offset)
-	println(limit)
 	// 평점과 함께 영화 정보를 조회하는 쿼리
 	query := `
 		SELECT m.id, m.title, m.genre, m.release_date, m.end_date, m.is_showing, m.created_at, m.updated_at, m.deleted_at, COALESCE(AVG(r.rating), 0) as avg_rating
