@@ -17,8 +17,12 @@ func NewMovieRepository(Db *sql.DB) domain.MovieRepository {
 }
 
 func (r *movieRepository) Insert(movie *domain.Movie) error {
+	currentTime := time.Now()
+
+	isShowing := currentTime.After(movie.ReleaseDate) && currentTime.Before(movie.EndDate)
+
 	query := "INSERT INTO movies (title, genre, release_date, end_date, is_showing) VALUES ($1, $2, $3, $4, $5) RETURNING id"
-	_, err := r.Db.Exec(query, movie.Title, movie.Genre, movie.ReleaseDate, movie.EndDate, movie.IsShowing)
+	_, err := r.Db.Exec(query, movie.Title, movie.Genre, movie.ReleaseDate, movie.EndDate, isShowing)
 	return err
 }
 

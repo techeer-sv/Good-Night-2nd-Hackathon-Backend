@@ -18,8 +18,8 @@ func MovieSuccessResponse(data *domain.Movie, message string) *fiber.Map {
 	movie := Movie{
 		Title:       data.Title,
 		Genre:       data.Genre,
-		ReleaseDate: data.ReleaseDate,
-		EndDate:     data.EndDate,
+		ReleaseDate: &data.ReleaseDate,
+		EndDate:     &data.EndDate,
 		IsShowing:   data.IsShowing,
 	}
 	return &fiber.Map{
