@@ -46,32 +46,45 @@ export class MovieController {
   async getMovies(
     @Query('genre') genre?: string,
     @Query('isShowing') isShowing?: string,
-  ): Promise<Movie[]> {
+    @Query('page') page?: number,
+    @Query('itemsPerPage') itemsPerPage?: number,
+  ): Promise<{ movies: Movie[]; total: number }> {
     let movies: Movie[];
     const isShowingBool = isShowing === 'true';
+    let total = 0; // 총 영화 개수
+
     if (genre && isShowing !== undefined) {
-      movies = await this.movieService.getMoviesByGenreAndShowing(
+      const result = await this.movieService.getMoviesByGenreAndShowing(
         genre,
         isShowingBool,
+        page,
+        itemsPerPage,
       );
+      movies = result.movies;
+      total = result.total;
     } else if (genre) {
-      movies = await this.movieService.getMoviesByGenre(genre);
+      const result = await this.movieService.getMoviesByGenre(
+        genre,
+        page,
+        itemsPerPage,
+      );
+      movies = result.movies;
+      total = result.total;
     } else if (isShowing !== undefined) {
-      movies = await this.movieService.getMoviesByShowing(isShowingBool);
+      const result = await this.movieService.getMoviesByShowing(
+        isShowingBool,
+        page,
+        itemsPerPage,
+      );
+      movies = result.movies;
+      total = result.total;
     } else {
-      movies = await this.movieService.getAllMovies();
+      const result = await this.movieService.getAllMovies(page, itemsPerPage);
+      movies = result.movies;
+      total = result.total;
     }
 
-    return movies;
-  }
-
-  @Get('rating')
-  async getMoviesByRate(
-    @Query('page') page: number,
-    @Query('itemsPerPage')
-    itemsPerPage: number,
-  ): Promise<{ movies: Movie[]; total: number }> {
-    return this.movieService.getMoviesByRating(page, itemsPerPage);
+    return { movies, total }; // 영화 목록과 총 개수를 함께 반환
   }
 
   @Delete(':id')

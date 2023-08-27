@@ -27,36 +27,67 @@ export class MovieService {
     return this.movieRepository.findOneBy({ id });
   }
 
-  async getAllMovies(): Promise<Movie[]> {
-    return this.movieRepository.find({
-      order: { releaseDate: 'ASC' },
-    });
+  async getAllMovies(
+    page: number = 1,
+    itemsPerPage: number = 10,
+  ): Promise<{ movies: Movie[]; total: number }> {
+    const [movies, total] = await this.movieRepository
+      .createQueryBuilder('movie')
+      .orderBy('releaseDate', 'ASC')
+      .skip((page - 1) * itemsPerPage)
+      .take(itemsPerPage)
+      .getManyAndCount();
+
+    return { movies, total };
   }
 
-  async getMoviesByGenre(genre: string): Promise<Movie[]> {
-    return this.movieRepository.find({
-      where: { genre },
-      order: { releaseDate: 'ASC' },
-    });
+  async getMoviesByGenre(
+    genre: string,
+    page: number = 1,
+    itemsPerPage: number = 10,
+  ): Promise<{ movies: Movie[]; total: number }> {
+    const [movies, total] = await this.movieRepository
+      .createQueryBuilder('movie')
+      .where({ genre })
+      .orderBy('releaseDate', 'ASC')
+      .skip((page - 1) * itemsPerPage)
+      .take(itemsPerPage)
+      .getManyAndCount();
+
+    return { movies, total };
   }
 
-  async getMoviesByShowing(isShowing: boolean): Promise<Movie[]> {
-    return this.movieRepository.find({
-      where: { isShowing },
-      order: { releaseDate: 'ASC' },
-    });
+  async getMoviesByShowing(
+    isShowing: boolean,
+    page: number = 1,
+    itemsPerPage: number = 10,
+  ): Promise<{ movies: Movie[]; total: number }> {
+    const [movies, total] = await this.movieRepository
+      .createQueryBuilder('movie')
+      .where({ isShowing })
+      .orderBy('releaseDate', 'ASC')
+      .skip((page - 1) * itemsPerPage)
+      .take(itemsPerPage)
+      .getManyAndCount();
+
+    return { movies, total };
   }
 
   async getMoviesByGenreAndShowing(
     genre: string,
     isShowing: boolean,
-  ): Promise<Movie[]> {
-    const movies = await this.movieRepository.find({
-      where: { genre, isShowing },
-      order: { releaseDate: 'ASC' },
-    });
+    page: number = 1,
+    itemsPerPage: number = 10,
+  ): Promise<{ movies: Movie[]; total: number }> {
+    const [movies, total] = await this.movieRepository
+      .createQueryBuilder('movie')
+      .where({ genre, isShowing })
+      .orderBy('releaseDate', 'ASC')
+      .skip((page - 1) * itemsPerPage)
+      .take(itemsPerPage)
+      .getManyAndCount();
 
-    return movies;
+    return { movies, total };
   }
 
   async getMoviesByRating(
@@ -65,18 +96,6 @@ export class MovieService {
   ): Promise<{ movies: Movie[]; total: number }> {
     const [movies, total] = await this.movieRepository
       .createQueryBuilder('movie')
-      .select([
-        'movie.id',
-        'movie.title',
-        'movie.genre',
-        'movie.releaseDate',
-        'movie.endDate',
-        'movie.isShowing',
-      ])
-      .addSelect('AVG(review.rating)', 'avgRating') // avgRating을 추가적인 SELECT 열로 지정
-      .leftJoin('movie.reviews', 'review')
-      .groupBy('movie.id')
-      .orderBy('avgRating', 'DESC')
       .skip((page - 1) * itemsPerPage)
       .take(itemsPerPage)
       .getManyAndCount();
