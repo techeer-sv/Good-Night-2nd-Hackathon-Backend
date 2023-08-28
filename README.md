@@ -115,3 +115,31 @@
 - [김영준](https://github.com/0BVer) 🦫
 - [김하린](https://github.com/kimhalin) 🦦
 - [김정현](https://github.com/kjeongh) 🦌
+
+---
+
+# 개발환경
+
+- Go 1.20
+- Gorm
+- Gin
+- MySQL 8.0
+- Docker
+- Docker-compose
+- Swagger
+
+# 📝 실행 방법
+
+### 실행
+```shell
+docker-compose up -d
+```
+
+### Swagger
+```
+http://localhost:8080/api/v1/swagger/index.html#/
+```
+
+### 주의사항
+- 모든 파라미터는 항상 필수이지만, 공백 가능입니다.
+- pagination 파라미터의 페이지는 0번 부터 시작됩니다.
