@@ -3,7 +3,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { MovieModule } from './movie/movie.module';
-import { SModule } from './s/s.module';
+import { Movie } from './movie/entity/movie.entiity';
 
 @Module({
   imports: [
@@ -14,11 +14,10 @@ import { SModule } from './s/s.module';
       username: 'user',
       password: 'password',
       database: 'movie',
-      entities: [],
+      entities: [Movie],
       synchronize: true,
     }),
     MovieModule,
-    SModule,
   ],
   controllers: [AppController],
   providers: [AppService],
