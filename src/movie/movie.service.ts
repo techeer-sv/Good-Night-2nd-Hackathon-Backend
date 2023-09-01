@@ -27,4 +27,23 @@ export class MovieService {
 
     return await this.movieRepository.save(movie);
   }
+
+  async findAll(genre?: string, isShowing?: boolean): Promise<Movie[]> {
+    const query = this.movieRepository
+      .createQueryBuilder('movie')
+      .orderBy('movie.releaseDate', 'ASC');
+
+    if (genre) {
+      query.andWhere('movie.genre = :genre', { genre });
+    }
+
+    if (isShowing) {
+      query.andWhere('movie.isShowing = :isShowing', { isShowing });
+    }
+    return await query.getMany();
+  }
+
+  async findOne(id: number): Promise<Movie> {
+    return await this.movieRepository.findOne({ where: { id: id } });
+  }
 }
