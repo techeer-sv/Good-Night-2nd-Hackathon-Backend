@@ -2,7 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Movie } from './entity/movie.entiity';
-import { CreateMovieDto } from './dto/movie.dto';
+import { CreateMovieDto } from './dto/create-movie.dto';
+import { UpdateMovieDto } from './dto/update-movie.dto';
 
 @Injectable()
 export class MovieService {
@@ -45,5 +46,17 @@ export class MovieService {
 
   async findOne(id: number): Promise<Movie> {
     return await this.movieRepository.findOne({ where: { id: id } });
+  }
+
+  async update(id: number, updateMovieDto: UpdateMovieDto): Promise<Movie> {
+    await this.movieRepository.update(id, {
+      ...updateMovieDto,
+      updatedAt: new Date(),
+    });
+    return await this.findOne(id);
+  }
+
+  async delete(id: number): Promise<void> {
+    await this.movieRepository.softDelete(id);
   }
 }
