@@ -3,9 +3,11 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Review } from '../../review/entity/review.entity';
 
 @Entity()
 export class Movie {
@@ -47,4 +49,7 @@ export class Movie {
 
   @DeleteDateColumn({ type: 'timestamp', nullable: true })
   deletedAt?: Date;
+
+  @OneToMany(() => Review, (review) => review.movie)
+  reviews: Review[];
 }

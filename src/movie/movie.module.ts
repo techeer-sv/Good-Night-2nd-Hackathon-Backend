@@ -8,5 +8,6 @@ import { MovieController } from './movie.controller';
   imports: [TypeOrmModule.forFeature([Movie])], // movie entity 등록
   providers: [MovieService],
   controllers: [MovieController],
+  exports: [MovieService],
 })
 export class MovieModule {}

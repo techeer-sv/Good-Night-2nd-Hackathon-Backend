@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { MovieModule } from './movie/movie.module';
 import { Movie } from './movie/entity/movie.entiity';
+import { ReviewModule } from './review/review.module';
+import { Review } from './review/entity/review.entity';
 
 @Module({
   imports: [
@@ -14,12 +14,13 @@ import { Movie } from './movie/entity/movie.entiity';
       username: 'user',
       password: 'password',
       database: 'movie',
-      entities: [Movie],
+      entities: [Movie, Review],
       synchronize: true,
     }),
     MovieModule,
+    ReviewModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}
